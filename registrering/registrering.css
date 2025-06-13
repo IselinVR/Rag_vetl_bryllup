@@ -1,0 +1,154 @@
+body{
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    background-color:  #fff9e6;
+}
+#overskrift{
+    /* margin-top: 72.628px; */
+    margin-top: 40px;
+    text-align: center;
+    cursor: pointer;
+    /* height: 178.2px; */
+}
+
+.imgcontainer{
+    max-width: 100%;
+    width: 1100px;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0;
+}
+.imgcontainer img{
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
+}
+
+.navlist a, 
+.navlist a:visited{
+    text-decoration: none;
+    color: black;
+}
+
+.navlist li{
+    text-decoration: none;
+    list-style: none;
+    padding: 0;
+    cursor: pointer;
+   
+}
+
+.navlist{
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    gap: 50px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.navbar{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .navlist {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+.navlist a{
+  position: relative;
+}
+.navlist a::after{
+  content: '';
+  position: absolute;
+  height: 2px;
+  left: 0;
+  bottom: 0px;
+  width: 0;
+  background: #487ff7;
+  transition: width 0.2s;
+}
+
+.navlist a:hover::after{
+  width: 100%;
+}
+#registrering{
+  font-weight: bold;
+}
+
+.guestreg{
+    max-width: 1062px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff9e6;
+    /* border-radius: 10px; */
+}
+
+.regnavn{
+    display: block;
+    margin: 10px 0 5px;
+}
+.regboks{
+    width: 50%;
+    padding: 8px;
+    border-bottom: 5px;
+    border: 1px solid #ccc;
+}
+.radio{
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+#allergiboks{
+    width: 50%;
+    padding: 8px;
+    border-bottom: 5px;
+    border: 1px solid #ccc;
+    display: block;
+}
+#allergi{
+    display: block;
+    margin: 10px 0 5px;
+}
+@media (min-width: 600px){
+    .form-row {
+        display: flex;
+        gap: 10px;
+    }
+}
+
+#sendinn{
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #4996e2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#regflere{
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #a79a70;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.deleteguest{
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #70a78c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+}

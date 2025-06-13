@@ -1,0 +1,193 @@
+body{
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    background-color:  #fff9e6;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    position: relative;
+}
+#overskrift1{
+  text-align: center;
+}
+
+#overskrift{
+    text-align: center;
+}
+
+/* .underoverskrift2{
+    gap: 10px;
+} */
+
+.navlist li{
+    text-decoration: none;
+    list-style: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.navlist a,
+.navlist a:visited{
+    text-decoration: none;
+    color: black;
+}
+
+.navlist a{
+  position: relative;
+}
+.navlist a::after{
+  content: '';
+  position: absolute;
+  height: 2px;
+  left: 0;
+  bottom: 0px;
+  width: 0;
+  background: #487ff7;
+  transition: width 0.2s;
+}
+
+.navlist a:hover::after{
+  width: 100%;
+}
+
+.navlist{
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    gap: 50px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.navbar{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .navlist {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+#forside{
+  font-weight: bold;
+}
+/* 
+.imgcontainer{
+    max-width: 100%;
+    width: 1100px;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0;
+}
+.imgcontainer img{
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
+}
+
+#invitasjon{
+    text-align: center;
+    width: 1100px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+#regbutton{
+    text-align: center;
+    cursor: pointer;
+} */
+
+
+.imgcontainer {
+  max-width: 1100px;
+  width: 90%;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.imgcontainer img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  z-index: 5;
+  position: relative;
+}
+
+#invitasjon {
+  max-width: 1100px;
+  width: 90%;
+  margin: 40px auto;
+  text-align: center;
+  padding: 0 20px;
+}
+
+#regbutton {
+  text-align: center;
+  margin: 40px 0;
+}
+
+#regbutton button {
+  padding: 12px 24px;
+  font-size: 1rem;
+  border: none;
+  background-color: #487ff7;
+  color: #000;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#regbutton button:hover {
+    background-color: #4275e2;
+}
+
+#flower1{
+  position: absolute;
+  width: 250px;
+  max-width: 100%;
+  top: 100px;
+  right: 20px;
+  opacity: 0.8;
+  z-index: 0;
+}
+
+
+#leaf1{
+  position: absolute;
+  width: 250px;
+  max-width: 100%;
+  bottom: 20px;
+  left: 20px;
+  opacity: 0.8;
+  transition: all 0.5s ease;
+  z-index: 1;
+}
+
+@media (max-width: 1200px) { 
+  #leaf1, #flower1 {
+    opacity: 0.8;
+    transform: translateX(-100px);
+  }
+}
+
+@media (max-width: 768px) {
+  #leaf1, #flower1 {
+    opacity: 0;
+    transform: translateX(-300px); 
+    pointer-events: none;
+  }
+}
+
+
+/* @media (max-width: 1200px){
+  #leaf1{
+    opacity: 0;
+    transform: translateX(-50px);
+    pointer-events: none;
+  }
+} */

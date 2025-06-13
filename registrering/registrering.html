@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrering</title>
+    <link rel="stylesheet" href="registrering.css" />
+  </head>
+ <body>
+<div>
+    <h1 id="overskrift">Ragnhild & Vetle</h1>
+</div>
+
+<nav class="navbar">
+    <ul class="navlist">
+        <li><a id="forside" href="../forside/index.html">Forside</a></li>
+        <li><a id="registrering" href="../registrering/registrering.html">Registrering</a></li>
+        <li><a id="sted" href="../sted/sted.html">Sted</a></li>
+    </ul>
+</nav>
+
+
+<!-- <div class="imgcontainer">
+    <img src="hovedbilde.jpg" alt="Bilde av Rag&Vetle">
+    
+</div> -->
+
+
+<br>
+<form class="guestreg"> 
+    <h1>Registrer deg her</h1>
+            <p>Vennligst svar innen 01.10.25 om du kan feire bryllupsdagen med oss</p><br>
+            <hr><br>
+
+    <div id="guestcontainer">
+        <div class="guest">
+            <label class="regnavn" for="name">Fornavn:</label>
+            <input class="regboks" type="text" placeholder="Fornavn" required><br>
+
+            <label class="regnavn" for="etternavn">Etternavn:</label>
+            <input class="regboks" type="text" placeholder="Etternavn" required><br>
+
+            
+            <p>Kommer du?</p>
+            <label>
+                <input class="radio" type="radio" name="attendance" value="yes" required>
+                Ja, jeg kommer!
+            </label>
+            <label>
+                <input class="radio" type="radio" name="attendance" value="no" required>
+                Nei, jeg kan desverre ikke komme
+            </label><br><br>
+
+            
+            <label id="allergi" for="allergi">Har du allergier?</label>
+            <textarea id="allergiboks" type="text"></textarea>
+        </div>
+    </div>
+        <br><br>
+        <button type="button" id="regflere">+ Registrer flere gjester</button>
+        <br><br>
+        <button id="sendinn">Send inn</button>
+
+    </div>
+</form>
+<script src="../registrering/registrering.js"></script>
+</body>
+
+</html>
