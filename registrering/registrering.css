@@ -1,7 +1,38 @@
-body{
+/* body{
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     background-color:  #fff9e6;
+} */
+
+body{
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    /* background-color:  #fff9e6; */
+    background-color:  hsl(57, 34%, 87%);;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    position: relative;
 }
+
+/* #flower1{
+  position: absolute;
+  width: 250px;
+  max-width: 100%;
+  top: 50px;
+  right: 20px;
+  opacity: 0.5;
+  z-index: 0;
+} */
+
+@media (max-width: 700px) {
+  #flower1 {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    opacity: 0.1;
+  }
+} 
+
+
 #overskrift{
     /* margin-top: 72.628px; */
     margin-top: 40px;
@@ -84,7 +115,8 @@ body{
     max-width: 1062px;
     margin: 0 auto;
     padding: 20px;
-    background: #fff9e6;
+    background-color:  hsl(57, 34%, 87%);;
+    /* background: #fff9e6; */
     /* border-radius: 10px; */
 }
 
@@ -114,16 +146,11 @@ body{
     display: block;
     margin: 10px 0 5px;
 }
-@media (min-width: 600px){
-    .form-row {
-        display: flex;
-        gap: 10px;
-    }
-}
 
 #sendinn{
     margin-top: 15px;
     padding: 10px 20px;
+    width: 52%;
     background: #4996e2;
     color: white;
     border: none;
@@ -131,24 +158,45 @@ body{
     cursor: pointer;
 }
 
+
 #regflere{
     margin-top: 15px;
-    padding: 10px 20px;
+    padding: 10px 10px;
     background: #a79a70;
     color: white;
-    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    
+}
+
+#plusbtn{
+    width: 20px;
+    height: 20px;
+    
+}
+
+.line{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.deleteguest{
+    margin-top: 15px;
+    padding: 10px 10px;
+    background: #b80000;
+    color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
-.deleteguest{
-    margin-top: 15px;
-    padding: 10px 20px;
-    background: #70a78c;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-
+@media (max-width: 700px){
+    .radiocontainer {
+        display: flex;
+        gap: 10px;
+    }
+    #sendinn{
+        width: 55%;
+    }
 }

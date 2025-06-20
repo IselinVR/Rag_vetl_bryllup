@@ -1,7 +1,36 @@
-body{
+/* body{
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     background-color:  #fff9e6;
+} */
+
+body{
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    /* background-color:  #fff9e6; */
+    background-color:  hsl(57, 34%, 87%);;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    position: relative;
 }
+
+/* #flower1{
+  position: absolute;
+  width: 250px;
+  max-width: 100%;
+  top: 50px;
+  right: 20px;
+  opacity: 0.5;
+  z-index: 0;
+} */
+
+@media (max-width: 700px) {
+  #flower1 {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    opacity: 0.1;
+  }
+} 
 
 #overskrift{
     margin-top: 40px;
@@ -97,3 +126,4 @@ body{
     width: 100%;
   }
 }
+

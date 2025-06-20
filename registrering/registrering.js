@@ -1,4 +1,4 @@
-const overskrift = document.getElementById("overskrift2");
+const overskrift = document.getElementById("overskrift");
 
 overskrift.addEventListener("click", event =>{
     window.location.href = "../forside/index.html";
@@ -29,10 +29,16 @@ registerMore.addEventListener("click", () =>{
 
     const deleteGuest = document.createElement("button");
     deleteGuest.classList.add("deleteguest");
-    deleteGuest.textContent = "Fjern gjest";
+    deleteGuest.textContent = " Fjern gjest";
     newGuest.appendChild(deleteGuest);
 
-    const line = document.createElement("hr");    
+
+    const minusIcon = document.createElement("i");
+    minusIcon.setAttribute("class", "fa-solid fa-minus");
+    deleteGuest.prepend(minusIcon);
+
+    const line = document.createElement("hr");
+    line.classList.add("line");    
     newGuest.prepend(line);
 
     deleteGuest.addEventListener("click", () => {

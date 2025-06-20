@@ -5,25 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registrering</title>
     <link rel="stylesheet" href="registrering.css" />
+    <script src="https://kit.fontawesome.com/254bbe4568.js" crossorigin="anonymous"></script>
   </head>
  <body>
-<div>
-    <h1 id="overskrift">Ragnhild & Vetle</h1>
-</div>
+
+    <!-- <img id="flower1" src="../img/flower1.png" alt="blomst"> -->
 
 <nav class="navbar">
     <ul class="navlist">
-        <li><a id="forside" href="../forside/index.html">Forside</a></li>
-        <li><a id="registrering" href="../registrering/registrering.html">Registrering</a></li>
-        <li><a id="sted" href="../sted/sted.html">Sted</a></li>
+        <li><a id="forside" href="../forside/index.html">FORSIDE</a></li>
+        <li><a id="registrering" href="../registrering/registrering.html">REGISTRERING</a></li>
+        <li><a id="sted" href="../sted/sted.html">STED</a></li>
     </ul>
 </nav>
 
-
-<!-- <div class="imgcontainer">
-    <img src="hovedbilde.jpg" alt="Bilde av Rag&Vetle">
-    
-</div> -->
+    <h1 id="overskrift">VETLE OG RAGNHILD</h1>
 
 
 <br>
@@ -42,26 +38,23 @@
 
             
             <p>Kommer du?</p>
-            <label>
+            <label class="radiocontainer">
                 <input class="radio" type="radio" name="attendance" value="yes" required>
                 Ja, jeg kommer!
             </label>
-            <label>
+            <label class="radiocontainer">
                 <input class="radio" type="radio" name="attendance" value="no" required>
                 Nei, jeg kan desverre ikke komme
             </label><br><br>
 
             
-            <label id="allergi" for="allergi">Har du allergier?</label>
+            <label id="allergi" for="allergi">Har du allergier? (Valgfritt å svare)</label>
             <textarea id="allergiboks" type="text"></textarea>
         </div>
     </div>
-        <br><br>
-        <button type="button" id="regflere">+ Registrer flere gjester</button>
+        <button type="button" id="regflere"> <i class="fa-solid fa-plus"></i> Registrer flere</button>
         <br><br>
         <button id="sendinn">Send inn</button>
-
-    </div>
 </form>
 <script src="../registrering/registrering.js"></script>
 </body>
