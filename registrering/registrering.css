@@ -23,14 +23,14 @@ body{
   z-index: 0;
 } */
 
-@media (max-width: 700px) {
+/* @media (max-width: 700px) {
   #flower1 {
     left: 50%;
     right: auto;
     transform: translateX(-50%);
     opacity: 0.1;
   }
-} 
+}  */
 
 
 #overskrift{
@@ -39,19 +39,6 @@ body{
     text-align: center;
     cursor: pointer;
     /* height: 178.2px; */
-}
-
-.imgcontainer{
-    max-width: 100%;
-    width: 1100px;
-    text-align: center;
-    margin: 0 auto;
-    padding: 0;
-}
-.imgcontainer img{
-    max-width: 100%;
-    height: auto;
-    display: inline-block;
 }
 
 .navlist a, 
@@ -151,7 +138,7 @@ body{
     margin-top: 15px;
     padding: 10px 20px;
     width: 52%;
-    background: #4996e2;
+    background: #719cf7;
     color: white;
     border: none;
     border-radius: 5px;
