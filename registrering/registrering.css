@@ -5,7 +5,6 @@
 
 body{
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    /* background-color:  #fff9e6; */
     background-color:  hsl(57, 34%, 87%);;
     margin: 0;
     padding: 0;
@@ -13,32 +12,12 @@ body{
     position: relative;
 }
 
-/* #flower1{
-  position: absolute;
-  width: 250px;
-  max-width: 100%;
-  top: 50px;
-  right: 20px;
-  opacity: 0.5;
-  z-index: 0;
-} */
-
-/* @media (max-width: 700px) {
-  #flower1 {
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    opacity: 0.1;
-  }
-}  */
 
 
 #overskrift{
-    /* margin-top: 72.628px; */
     margin-top: 40px;
     text-align: center;
     cursor: pointer;
-    /* height: 178.2px; */
 }
 
 .navlist a, 
@@ -107,6 +86,12 @@ body{
     /* border-radius: 10px; */
 }
 
+@media (max-width: 1200px){
+.guestreg h2{
+    text-align: center;
+}
+}
+
 .regnavn{
     display: block;
     margin: 10px 0 5px;
@@ -129,6 +114,16 @@ body{
     border: 1px solid #ccc;
     display: block;
 }
+
+@media (max-width: 1200px){
+    #allergiboks, .regboks{
+        width: 95%;
+    }
+    .regboks{
+        font-size: 15px;
+    }
+}
+
 #allergi{
     display: block;
     margin: 10px 0 5px;
@@ -138,7 +133,7 @@ body{
     margin-top: 15px;
     padding: 10px 20px;
     width: 52%;
-    background: #719cf7;
+    background: #468FCC;
     color: white;
     border: none;
     border-radius: 5px;
@@ -154,7 +149,6 @@ body{
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    
 }
 
 #plusbtn{
@@ -178,12 +172,75 @@ body{
     cursor: pointer;
 }
 
+@media (max-width: 1200px){
+    #regflere{
+        font-size: 15px;
+    }
+    .deleteguest{
+        font-size: 12px;
+    }
+}
+
+
+.flower{
+  width: 100px;
+}
+
 @media (max-width: 700px){
     .radiocontainer {
         display: flex;
         gap: 10px;
     }
     #sendinn{
-        width: 55%;
+        width: 100%;
     }
+}
+@media (max-width: 1200px){
+    #guestcontainer{
+        font-size: 20px;
+    }
+}
+
+
+@media (max-width: 1200px){
+  .flower{
+    position: absolute;
+    width: 75px;
+    opacity: 0.8;
+    z-index: 0;
+  }
+}
+@media (max-width: 1200px){
+  #pinkflower1{
+    top: 40px;
+    right: 60px;
+  }
+  #blueflower1{
+    top: 45px;
+    right: 0px;
+    z-index: 1;
+  }
+  #orangeflower1{
+    right: 10px;
+    top: 10px;
+  }
+}
+
+@media (max-width: 1200px){
+  #pinkflower2{
+    top: 40px;
+    left: 60px;
+    transform: scaleX(-1);
+  }
+  #blueflower2{
+    top: 45px;
+    left: 0px;
+    z-index: 1;
+    transform: scaleX(-1);
+  }
+  #orangeflower2{
+    left: 10px;
+    top: 10px;
+    transform: scaleX(-1);
+  }
 }
