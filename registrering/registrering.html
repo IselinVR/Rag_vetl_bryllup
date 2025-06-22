@@ -15,7 +15,6 @@
     <ul class="navlist">
         <li><a id="forside" href="../forside/index.html">Forside</a></li>
         <li><a id="registrering" href="../registrering/registrering.html">Registrering</a></li>
-        <!-- <li><a id="sted" href="../sted/sted.html">Sted</a></li> -->
     </ul>
 </nav>
 
@@ -29,13 +28,13 @@
     <div id="guestcontainer">
         <div class="guest">
             <label class="regnavn" for="name">Fornavn:</label>
-            <input class="regboks" type="text" placeholder="Fornavn" required><br>
+            <input class="regboks" name="first_name" type="text" placeholder="Fornavn" required><br>
 
             <label class="regnavn" for="etternavn">Etternavn:</label>
-            <input class="regboks" type="text" placeholder="Etternavn" required><br>
+            <input class="regboks" name="last_name" type="text" placeholder="Etternavn" required><br>
         <div id="regmail">
             <label class="regnavn" for="email">Email (for å motta bekreftelse):</label>
-            <input id="email" type="email" placeholder="navn@gmail.com" required>
+            <input id="email" type="email" name="email" placeholder="navn@gmail.com" required>
         </div>
             <p>Kommer du?</p>
             <label class="radiocontainer">
@@ -46,17 +45,15 @@
                 <input class="radio" type="radio" name="attendance" value="no" required >
                 Nei, jeg kan desverre ikke komme
             </label>
-
-            
             <label id="allergi" for="allergi">Har du allergier? (Valgfritt å svare)</label>
-            <textarea id="allergiboks" type="text"></textarea>
+            <textarea name="allergies" id="allergiboks" type="text"></textarea>
         </div>
     </div>
         <button  type="button" id="regflere"> <i class="fa-solid fa-plus"></i> Registrer flere</button>
         <br><br>
         <button type="submit" id="sendinn">SEND INN</button>
 </form>
-<script src="../registrering/registrering.js"></script>
+<script type="module" src="../registrering/registrering.js"></script>
 </body>
 
 </html>
