@@ -1,0 +1,25 @@
+body{
+    font-family:'Glacial Indifference', sans-serif;
+    background-color: hsl(44, 60%, 95%);
+    margin: 0;
+    padding: 0;
+    /* line-height: 1.6; */
+    position: relative;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    height: 100vh;
+}
+
+button {
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: none;
+  background-color: rgb(225, 204, 178);
+  color: #000;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.container{
+    text-align: center;
+}

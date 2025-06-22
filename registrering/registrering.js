@@ -14,6 +14,11 @@ registerMore.addEventListener("click", () =>{
     const firstGuest = document.querySelector(".guest");
     const newGuest = firstGuest.cloneNode(true);
 
+    const removeDiv = newGuest.querySelector("#regmail");
+    if(removeDiv){
+        newGuest.removeChild(removeDiv);
+    }
+
     const radios = newGuest.querySelectorAll('input[type="radio"]');
     radios.forEach(radio => {
         const name = `attendance-${guestCount}`;
@@ -47,38 +52,32 @@ registerMore.addEventListener("click", () =>{
 
 });
 
-const sendInn = document.getElementById("sendinn");
-const regBox = document.getElementsByClassName("regboks");
-const radio = document.getElementsByClassName("radio");
 
 
-// sendInn.addEventListener("click", () =>{
-//     window.location.href = "../confirmation/confirmation.html";
-// });
+const guestreg = document.getElementById("guestForm");
+const emailInput = document.getElementById("email");
+
+guestreg.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    // const emailValue = emailInput.value;
+    // const emailIsValid = emailValue.includes("@") && emailValue.includes(".");
+
+    if(!emailInput.checkValidity()){
+       emailInput.setCustomValidity("Skriv inn en gyldig e-postadresse");
+       emailInput.reportValidity();
+       return;
+    } else{
+        emailInput.setCustomValidity("");
+    }
+
+    if (guestreg.checkValidity()) {
+        window.location.href = "../confirmation/confirmation.html";
+    } else {
+        guestreg.reportValidity();
+    }
+});
 
 
 
-
-
-//Eks. 2 (litt enklere måte)
-// mysubmit.onclick = function(){
-//     if(mycheckbox.checked){
-//         subresult.textContent = `You are subscribed`;
-//     }
-//     else{
-//         subresult.textContent = "You are not subscribed";
-//     }
-//     if(visabtn.checked){
-//         paymentresult.textContent = `You are paying with Visa`;
-//     }
-//     else if(mastercardbtn.checked){
-//         paymentresult.textContent = `You are paying with Mastercard`;
-//     }
-//     else if(vippsbtn.checked){
-//         paymentresult.textContent = `You are paying with Vipps`;
-//     }
-//     else{
-//         paymentresult.textContent = `You must choose a payment`;
-//     }
-// }
 

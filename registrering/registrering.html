@@ -15,13 +15,13 @@
     <ul class="navlist">
         <li><a id="forside" href="../forside/index.html">Forside</a></li>
         <li><a id="registrering" href="../registrering/registrering.html">Registrering</a></li>
-        <li><a id="sted" href="../sted/sted.html">Sted</a></li>
+        <!-- <li><a id="sted" href="../sted/sted.html">Sted</a></li> -->
     </ul>
 </nav>
 
     <p id="overskrift">VETLE & RAGNHILD</p>
 
-<form class="guestreg"> 
+<form class="guestreg" id="guestForm"> 
     <p id="underoverskrift">REGISTRER DEG HER</p>
             
             <hr><br>
@@ -33,15 +33,17 @@
 
             <label class="regnavn" for="etternavn">Etternavn:</label>
             <input class="regboks" type="text" placeholder="Etternavn" required><br>
-
-            
+        <div id="regmail">
+            <label class="regnavn" for="email">Email (for å motta bekreftelse):</label>
+            <input id="email" type="email" placeholder="navn@gmail.com" required>
+        </div>
             <p>Kommer du?</p>
             <label class="radiocontainer">
                 <input class="radio" type="radio" name="attendance" value="yes" required>
                 Ja, jeg kommer!
             </label>
             <label class="radiocontainer">
-                <input class="radio" type="radio" name="attendance" value="no" required>
+                <input class="radio" type="radio" name="attendance" value="no" required >
                 Nei, jeg kan desverre ikke komme
             </label>
 
@@ -50,9 +52,9 @@
             <textarea id="allergiboks" type="text"></textarea>
         </div>
     </div>
-        <button type="button" id="regflere"> <i class="fa-solid fa-plus"></i> Registrer flere</button>
+        <button  type="button" id="regflere"> <i class="fa-solid fa-plus"></i> Registrer flere</button>
         <br><br>
-        <button id="sendinn">SEND INN</button>
+        <button type="submit" id="sendinn">SEND INN</button>
 </form>
 <script src="../registrering/registrering.js"></script>
 </body>

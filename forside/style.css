@@ -5,6 +5,9 @@ body{
     padding: 0;
     /* line-height: 1.6; */
     position: relative;
+    text-align: center;
+
+
 }
 #overskrift{
   text-align: center;
@@ -36,7 +39,14 @@ body{
     color: black;
 }
 
-.navlist a{
+#forside{
+  font-weight: bold;
+  text-decoration: underline 2px;
+  -webkit-text-decoration-line: underline;
+}
+
+
+/* .navlist a{
   position: relative;
 }
 .navlist a::after{
@@ -52,7 +62,7 @@ body{
 
 .navlist a:hover::after{
   width: 100%;
-}
+} */
 
 .navlist{
     margin: 0;
@@ -71,39 +81,11 @@ body{
 
 @media (max-width: 600px) {
   .navlist {
-    flex-direction: column;
+    /* flex-direction: column; */
     gap: 20px;
   }
 }
 
-#forside{
-  font-weight: bold;
-}
-/* 
-.imgcontainer{
-    max-width: 100%;
-    width: 1100px;
-    text-align: center;
-    margin: 0 auto;
-    padding: 0;
-}
-.imgcontainer img{
-    max-width: 100%;
-    height: auto;
-    display: inline-block;
-}
-
-#invitasjon{
-    text-align: center;
-    width: 1100px;
-    max-width: 100%;
-    margin: 0 auto;
-}
-
-#regbutton{
-    text-align: center;
-    cursor: pointer;
-} */
 
 
 .imgcontainer {
@@ -123,14 +105,6 @@ body{
   position: relative;
 }
 
-#invitasjon {
-  max-width: 1100px;
-  width: 90%;
-  /* margin: 40px auto; */
-  text-align: center;
-  padding: 0 20px;
-}
-
 #regbutton {
   text-align: center;
   /* margin: 40px 0; */
@@ -146,271 +120,3 @@ body{
   cursor: pointer;
 }
 
-/* #regbutton button:hover {
-    background-color: #468FCC;
-} */
-#invitasjon{
-  z-index: 10;
-}
-
-.flower{
-  width: 100px;
-}
-
-@media (max-width: 1200px){
-  .flower{
-    position: absolute;
-    width: 75px;
-    opacity: 0.8;
-    z-index: 0;
-    /* right: 10px;
-    top: 10px; */
-  }
-}
-@media (max-width: 1200px){
-  #pinkflower1{
-    top: 40px;
-    right: 60px;
-  }
-  #blueflower1{
-    top: 45px;
-    right: 0px;
-    z-index: 1;
-  }
-  #orangeflower1{
-    right: 10px;
-    top: 10px;
-  }
-}
-
-@media (max-width: 1200px){
-  #pinkflower2{
-    top: 40px;
-    left: 60px;
-    transform: scaleX(-1);
-  }
-  #blueflower2{
-    top: 45px;
-    left: 0px;
-    z-index: 1;
-    transform: scaleX(-1);
-  }
-  #orangeflower2{
-    left: 10px;
-    top: 10px;
-    transform: scaleX(-1);
-  }
-}
-
-/* #flower1{
-  position: absolute;
-  width: 250px;
-  max-width: 100%;
-  top: 50px;
-  right: 20px;
-  opacity: 0.5;
-  z-index: 0;
-} */
-
-/* @media (max-width: 700px) {
-  #flower1 {
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    opacity: 0.1;
-  }
-}  */
-
-/* #blueflower{
-  position: absolute;
-  width: 300px;
-  max-width: 100%;
-  top: 100px;
-  right: 30px;
-  opacity: 0.8;
-  z-index: 0;
-}
-
-#pinkflower1{
-  position: absolute;
-  width: 300px;
-  max-width: 100%;
-  top: 50px;
-  left: 20px;
-  opacity: 0.8;
-  z-index: 0;
-}
-#pinkflower2{
-  position: absolute;
-  width: 300px;
-  max-width: 100%;
-  bottom: 50px;
-  right: 20px;
-  opacity: 0.8;
-  z-index: 0;
-}
-
-#pinkflower3{
-  position: absolute;
-  width: 300px;
-  max-width: 100%;
-  top: 500px;
-  right: 200px;
-  opacity: 0.8;
-  z-index: 0;
-}
-#whiteflower1{
-  position: absolute;
-  width: 300px;
-  max-width: 100%;
-  top: 500px;
-  right: 10px;
-  opacity: 0.8;
-  z-index: 0;
-}
-
-#whiteflower2{
-  position: absolute;
-  width: 300px;
-  max-width: 100%;
-  bottom: 500px;
-  right: 160px;
-  opacity: 0.8;
-  z-index: 0;
-}
-#blueflower1{
-  position: absolute;
-  width: 300px;
-  max-width: 100%;
-  top: 200px;
-  right: 20px;
-  opacity: 0.7;
-  z-index: 0;
-}
-#blueflower2{
-  position: absolute;
-  width: 300px;
-  max-width: 100%;
-  bottom: 200px;
-  left: 20px;
-  opacity: 0.8;
-  z-index: 0;
-}
-
-#orangeflower1{
-  position: absolute;
-  width: 300px;
-  max-width: 100%;
-  top: 100px;
-  right: 400px;
-  opacity: 0.8;
-  z-index: 0;
-}
-
-#orangeflower2{
-  position: absolute;
-  width: 300px;
-  max-width: 100%;
-  bottom: 100px;
-  left: 200px;
-  opacity: 0.8;
-  z-index: 0;
-}
-
-
-
-@media (max-width: 800px){
-  #pinkflower1{
-    width: 115px;
-    top: 350px;
-    left: 5px;
-    z-index: 8;
-  }
-  #pinkflower2{
-    width: 100px;
-    top: 620px;
-    right: 2px;
-    z-index: 8;
-  }
-  #pinkflower3{
-    width: 100px;
-    top: 800px;
-    left: 30px;
-  }
-  #blueflower1{
-    width: 110px;
-    top: 640px;
-    left: 0px;
-    z-index: 7;
-  }
-  #blueflower2{
-    width: 100px;
-    top: 200;
-    left: 15px;
-  }
-  #orangeflower1{
-    width: 100px;
-    top: 300px;
-    right: 15px;
-  }
-  #orangeflower2{
-    width: 100px;
-    top: 200;
-    left: 15px;
-  }
-  #whiteflower1{
-    width: 100px;
-    top: 360px;
-    right: 0px;
-    z-index: 7;
-  }
-  #whiteflower2{
-    width: 100px;
-    top: 200;
-    left: 15px;
-  }
-
-} */
-
-
-
-
-
-/* #leaf1{
-  position: absolute;
-  width: 250px;
-  max-width: 100%;
-  bottom: 20px;
-  left: 20px;
-  opacity: 0.2;
-  transition: all 0.5s ease;
-  z-index: 1;
-} */
-
-
-
-/* @media (max-width: 1180px) { 
-  #leaf1, #flower1 {
-    opacity: 0.8;
-    transform: translateX(-100px);
-  }
-}
-
-@media (max-width: 1180px) {
-  #leaf1, #flower1 {
-    opacity: 0;
-    transform: translateX(-300px); 
-    pointer-events: none;
-  }
-} */
-
-
-
-
-
-/* @media (max-width: 1200px){
-  #leaf1{
-    opacity: 0;
-    transform: translateX(-50px);
-    pointer-events: none;
-  } */
