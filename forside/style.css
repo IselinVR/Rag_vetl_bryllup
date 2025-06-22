@@ -1,18 +1,22 @@
 body{
-    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    background-color:  hsl(57, 34%, 87%);
+    font-family:'Glacial Indifference', sans-serif;
+    background-color: hsl(44, 60%, 95%);
     margin: 0;
     padding: 0;
-    line-height: 1.6;
+    /* line-height: 1.6; */
     position: relative;
 }
-#overskrift1{
+#overskrift{
   text-align: center;
 }
 
 #overskrift{
     text-align: center;
     margin-top: 40px;
+}
+
+#overskrift2{
+  font-size: large;
 }
 
 /* .underoverskrift2{
@@ -122,32 +126,80 @@ body{
 #invitasjon {
   max-width: 1100px;
   width: 90%;
-  margin: 40px auto;
+  /* margin: 40px auto; */
   text-align: center;
   padding: 0 20px;
 }
 
 #regbutton {
   text-align: center;
-  margin: 40px 0;
+  /* margin: 40px 0; */
 }
 
 #regbutton button {
   padding: 10px 15px;
   font-size: 1rem;
   border: none;
-  background-color: #719cf7;
+  background-color: rgb(225, 204, 178);
   color: #000;
-  font-weight: bold;
   border-radius: 8px;
   cursor: pointer;
 }
 
-#regbutton button:hover {
-    background-color: #4275e2;
-}
+/* #regbutton button:hover {
+    background-color: #468FCC;
+} */
 #invitasjon{
   z-index: 10;
+}
+
+.flower{
+  width: 100px;
+}
+
+@media (max-width: 1200px){
+  .flower{
+    position: absolute;
+    width: 75px;
+    opacity: 0.8;
+    z-index: 0;
+    /* right: 10px;
+    top: 10px; */
+  }
+}
+@media (max-width: 1200px){
+  #pinkflower1{
+    top: 40px;
+    right: 60px;
+  }
+  #blueflower1{
+    top: 45px;
+    right: 0px;
+    z-index: 1;
+  }
+  #orangeflower1{
+    right: 10px;
+    top: 10px;
+  }
+}
+
+@media (max-width: 1200px){
+  #pinkflower2{
+    top: 40px;
+    left: 60px;
+    transform: scaleX(-1);
+  }
+  #blueflower2{
+    top: 45px;
+    left: 0px;
+    z-index: 1;
+    transform: scaleX(-1);
+  }
+  #orangeflower2{
+    left: 10px;
+    top: 10px;
+    transform: scaleX(-1);
+  }
 }
 
 /* #flower1{
@@ -169,7 +221,7 @@ body{
   }
 }  */
 
-#blueflower{
+/* #blueflower{
   position: absolute;
   width: 300px;
   max-width: 100%;
@@ -318,7 +370,7 @@ body{
     left: 15px;
   }
 
-}
+} */
 
 
 

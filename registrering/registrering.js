@@ -1,6 +1,6 @@
 const overskrift = document.getElementById("overskrift");
 
-overskrift.addEventListener("click", event =>{
+overskrift.addEventListener("click", () =>{
     window.location.href = "../forside/index.html";
 });
 
@@ -46,4 +46,39 @@ registerMore.addEventListener("click", () =>{
     });
 
 });
+
+const sendInn = document.getElementById("sendinn");
+const regBox = document.getElementsByClassName("regboks");
+const radio = document.getElementsByClassName("radio");
+
+
+// sendInn.addEventListener("click", () =>{
+//     window.location.href = "../confirmation/confirmation.html";
+// });
+
+
+
+
+
+//Eks. 2 (litt enklere måte)
+// mysubmit.onclick = function(){
+//     if(mycheckbox.checked){
+//         subresult.textContent = `You are subscribed`;
+//     }
+//     else{
+//         subresult.textContent = "You are not subscribed";
+//     }
+//     if(visabtn.checked){
+//         paymentresult.textContent = `You are paying with Visa`;
+//     }
+//     else if(mastercardbtn.checked){
+//         paymentresult.textContent = `You are paying with Mastercard`;
+//     }
+//     else if(vippsbtn.checked){
+//         paymentresult.textContent = `You are paying with Vipps`;
+//     }
+//     else{
+//         paymentresult.textContent = `You must choose a payment`;
+//     }
+// }
 

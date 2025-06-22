@@ -13,24 +13,6 @@ body{
     position: relative;
 }
 
-/* #flower1{
-  position: absolute;
-  width: 250px;
-  max-width: 100%;
-  top: 50px;
-  right: 20px;
-  opacity: 0.5;
-  z-index: 0;
-} */
-
-@media (max-width: 700px) {
-  #flower1 {
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    opacity: 0.1;
-  }
-} 
 
 #overskrift{
     margin-top: 40px;
@@ -127,3 +109,52 @@ body{
   }
 }
 
+
+.flower{
+  width: 100px;
+}
+
+@media (max-width: 1200px){
+  .flower{
+    position: absolute;
+    width: 75px;
+    opacity: 0.8;
+    z-index: 0;
+    /* right: 10px;
+    top: 10px; */
+  }
+}
+@media (max-width: 1200px){
+  #pinkflower1{
+    top: 40px;
+    right: 60px;
+  }
+  #blueflower1{
+    top: 45px;
+    right: 0px;
+    z-index: 1;
+  }
+  #orangeflower1{
+    right: 10px;
+    top: 10px;
+  }
+}
+
+@media (max-width: 1200px){
+  #pinkflower2{
+    top: 40px;
+    left: 60px;
+    transform: scaleX(-1);
+  }
+  #blueflower2{
+    top: 45px;
+    left: 0px;
+    z-index: 1;
+    transform: scaleX(-1);
+  }
+  #orangeflower2{
+    left: 10px;
+    top: 10px;
+    transform: scaleX(-1);
+  }
+}
