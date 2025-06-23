@@ -36,6 +36,9 @@ registerMore.addEventListener("click", () =>{
     const inputs = newGuest.querySelectorAll('input[type="text"');
     inputs.forEach(input => input.value = "");
 
+    const textarea = newGuest.querySelector('textarea[name="allergies"]');
+    if(textarea) textarea.value = '';
+
     guestContainer.appendChild(newGuest);
     guestCount++;
 

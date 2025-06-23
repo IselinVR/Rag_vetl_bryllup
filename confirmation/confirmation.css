@@ -1,17 +1,26 @@
-body{
+/* body{
     font-family:'Glacial Indifference', sans-serif;
     background-color: hsl(44, 60%, 95%);
     margin: 0;
     padding: 0;
     position: relative;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    height: 100vh;
-    font-weight: 300;
-    margin: 40px;
-}
+    /* justify-content: center; */
+    /* display: flex;
+    align-items: center; */
+    /* height: 100vh; */
+    /* font-weight: 300;
+    margin: 40px; */
 
+body{
+    font-family:'Glacial Indifference', sans-serif;
+    background-color: hsl(44, 60%, 95%);
+    /* margin: 0;
+    padding: 0; */
+    position: relative;
+    text-align: center;
+    font-weight: 300;
+}
+    
 #forsidebtn{
   padding: 10px 15px;
   font-size: 1rem;
@@ -22,14 +31,19 @@ body{
   cursor: pointer;
 }
 .container{
-    text-align: center;
+    margin-top: 40px;
+}
+
+#takk{
+  font-size: large;
+  font-weight: 300;
 }
 
 #registrerbtn{
   padding: 10px 15px;
   font-size: 1rem;
   border: none;
-  background-color: rgb(202, 56, 56);
+  background-color: rgb(233, 231, 149);
   color: #000;
   border-radius: 8px;
   cursor: pointer;
@@ -48,6 +62,11 @@ body{
   height: auto;
   display: block;
   margin: 0 auto;
-  z-index: 5;
   position: relative;
+}
+
+@media (max-width: 500px){
+.registrernytt{
+padding: 0 30px;
+ }
 }
