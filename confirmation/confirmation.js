@@ -1,7 +1,7 @@
 const forsideBtn = document.getElementById("forsidebtn");
 
 forsideBtn.addEventListener("click", () =>{
-    window.location.href = "../forside/index.html";
+    window.location.href = "../index.html";
 });
 
 const registrerBtn = document.getElementById("registrerbtn");

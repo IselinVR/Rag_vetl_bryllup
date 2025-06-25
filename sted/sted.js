@@ -1,5 +1,5 @@
 const overskrift = document.getElementById("overskrift");
 
 overskrift.addEventListener("click", event =>{
-    window.location.href = "../forside/index.html";
+    window.location.href = "index.html";
 });

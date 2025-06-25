@@ -8,7 +8,7 @@ const supabase = createClient(SUPA_URL, SUPA_KEY)
 const overskrift = document.getElementById("overskrift");
 
 overskrift.addEventListener("click", () =>{
-    window.location.href = "../forside/index.html";
+    window.location.href = "../index.html";
 });
 
 
