@@ -1,7 +1,3 @@
-/* body{
-    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    background-color:  #fff9e6;
-} */
 
 body{
     font-family:'Glacial Indifference', sans-serif;
@@ -11,8 +7,6 @@ body{
     position: relative;
     font-weight: 300;
 }
-
-
 
 #overskrift{
     margin-top: 40px;
@@ -32,7 +26,6 @@ body{
     list-style: none;
     padding: 0;
     cursor: pointer;
-   
 }
 
 .navlist{
@@ -52,7 +45,6 @@ body{
 
 @media (max-width: 600px) {
   .navlist {
-    /* flex-direction: column; */
     gap: 20px;
   }
 }
@@ -62,23 +54,6 @@ body{
   -webkit-text-decoration-line: underline;
 }
 
-/* .navlist a{
-  position: relative;
-}
-.navlist a::after{
-  content: '';
-  position: absolute;
-  height: 2px;
-  left: 0;
-  bottom: 0px;
-  width: 0;
-  background: #487ff7;
-  transition: width 0.2s;
-}
-
-.navlist a:hover::after{
-  width: 100%;
-} */
 #registrering{
   font-weight: bold;
 }
@@ -88,8 +63,6 @@ body{
     margin: 0 auto;
     padding: 20px;
     background-color: hsl(44, 60%, 95%);
-    /* background: #fff9e6; */
-    /* border-radius: 10px; */
 }
 
 
@@ -159,12 +132,9 @@ body{
     cursor: pointer;
 }
 
-
-
 #plusbtn{
     width: 20px;
     height: 20px;
-    
 }
 
 .line{
@@ -191,11 +161,6 @@ body{
     }
 }
 
-
-.flower{
-  width: 100px;
-}
-
 @media (max-width: 700px){
     .radiocontainer {
         display: flex;
@@ -210,48 +175,4 @@ body{
       font-size: 17px;
         line-height: 1.6;
     }
-}
-
-
-@media (max-width: 1200px){
-  .flower{
-    position: absolute;
-    width: 75px;
-    opacity: 0.8;
-    z-index: 0;
-  }
-}
-@media (max-width: 1200px){
-  #pinkflower1{
-    top: 40px;
-    right: 60px;
-  }
-  #blueflower1{
-    top: 45px;
-    right: 0px;
-    z-index: 1;
-  }
-  #orangeflower1{
-    right: 10px;
-    top: 10px;
-  }
-}
-
-@media (max-width: 1200px){
-  #pinkflower2{
-    top: 40px;
-    left: 60px;
-    transform: scaleX(-1);
-  }
-  #blueflower2{
-    top: 45px;
-    left: 0px;
-    z-index: 1;
-    transform: scaleX(-1);
-  }
-  #orangeflower2{
-    left: 10px;
-    top: 10px;
-    transform: scaleX(-1);
-  }
 }

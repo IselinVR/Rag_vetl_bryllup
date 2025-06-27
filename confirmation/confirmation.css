@@ -1,21 +1,7 @@
-/* body{
-    font-family:'Glacial Indifference', sans-serif;
-    background-color: hsl(44, 60%, 95%);
-    margin: 0;
-    padding: 0;
-    position: relative;
-    /* justify-content: center; */
-    /* display: flex;
-    align-items: center; */
-    /* height: 100vh; */
-    /* font-weight: 300;
-    margin: 40px; */
 
 body{
     font-family:'Glacial Indifference', sans-serif;
     background-color: hsl(44, 60%, 95%);
-    /* margin: 0;
-    padding: 0; */
     position: relative;
     text-align: center;
     font-weight: 300;
@@ -43,7 +29,8 @@ body{
   padding: 10px 15px;
   font-size: 1rem;
   border: none;
-  background-color: rgb(233, 231, 149);
+  /* background-color: rgb(233, 231, 149); */
+  background-color: #769db6;
   color: #000;
   border-radius: 8px;
   cursor: pointer;
