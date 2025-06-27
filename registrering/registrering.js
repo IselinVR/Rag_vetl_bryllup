@@ -64,7 +64,7 @@ registerMore.addEventListener("click", () =>{
 
 document.getElementById('guestForm').addEventListener('submit', async (e) => {
   e.preventDefault()  // Prevent the default page reload
-const mainEmail      = document.querySelector('.guest input[name="email"]').value.trim();
+  const mainEmail = document.querySelector('.guest input[name="email"]').value.trim();
 
   // Build an array of "row" objects—one per .guest block
   const rows = Array.from(document.querySelectorAll('.guest')).map(div => {
@@ -89,9 +89,39 @@ const mainEmail      = document.querySelector('.guest input[name="email"]').valu
     console.error('Supabase error:', error)
     return alert('Det skjedde en feil under innsending. Prøv igjen senere.')
   }
+  let summary = '';
+  rows.forEach((guest, index) => {
+  summary += `Gjest ${index + 1}:\n`;
+  summary += `Navn: ${guest.first_name} ${guest.last_name}\n`;
+  summary += `Kommer: ${guest.attending ? 'Ja' : 'Nei'}\n`;
+  summary += `Allergier: ${guest.allergies || 'Ingen'}\n\n`;
+});
+  try {
+    const response = await emailjs.send(
+      "service_o3qutk5",
+      "template_3gkuh4k",
+      { email: mainEmail, guest_summary: summary }
+    );
+    console.log('Email send success:', response.status, response.text);
+  
+    window.location.href = '../confirmation/confirmation.html';
+  } catch (err) {
+    console.error('EmailJS error:', err);
+    alert('Det skjedde en feil under sending av e-post. Prøv igjen senere.');
+  }
+});
 
-  window.location.href = '../confirmation/confirmation.html'
-})
+
+
+
+
+
+
+
+
+
+
+
 
 // const guestreg = document.getElementById("guestForm");
 // const emailInput = document.getElementById("email");

@@ -53,7 +53,18 @@
         <br><br>
         <button type="submit" id="sendinn">SEND INN</button> 
 </form>
-<script type="module" src="../registrering/registrering.js"></script>
-</body>
 
+
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script>
+    (function() {
+        emailjs.init("TsxEMZ_HueJzgKhtQ");
+    })();
+    </script>
+    <script type="module" src="../registrering/registrering.js"></script>
+    
+</body>
 </html>
