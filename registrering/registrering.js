@@ -66,6 +66,7 @@ document.getElementById('guestForm').addEventListener('submit', async (e) => {
   e.preventDefault();  // Prevent the default page reload
   const submitBtn = document.getElementById("sendinn");
   submitBtn.disabled = true;
+  submitBtn.textContent = "Sender...";
 
   const mainEmail = document.querySelector('.guest input[name="email"]').value.trim();
 
@@ -91,6 +92,7 @@ document.getElementById('guestForm').addEventListener('submit', async (e) => {
   if (error) {
     console.error('Supabase error:', error);
     submitBtn.disabled = false;
+    submitBtn.textContent = "Send inn";
     return alert('Det skjedde en feil under innsending. Prøv igjen senere.');
   }
   let summary = '';
@@ -113,6 +115,7 @@ document.getElementById('guestForm').addEventListener('submit', async (e) => {
     console.error('EmailJS error:', err);
     alert('Det skjedde en feil under sending av e-post. Prøv igjen senere.');
     submitBtn.disabled = false;
+    submitBtn.textContent = "Send inn";
   }
 });
 
