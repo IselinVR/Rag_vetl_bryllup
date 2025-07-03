@@ -62,37 +62,31 @@ registerMore.addEventListener("click", () =>{
 
 });
 
-document.getElementById('guestForm').addEventListener('submit', async (e) => {
-  e.preventDefault();  // Prevent the default page reload
+document.getElementById('guestForm').addEventListener('submit', async (event) => {
+  event.preventDefault();  
   const submitBtn = document.getElementById("sendinn");
   submitBtn.disabled = true;
-  submitBtn.textContent = "Sender...";
+  submitBtn.textContent = "SENDER...";
 
   const mainEmail = document.querySelector('.guest input[name="email"]').value.trim();
 
-  // Build an array of "row" objects—one per .guest block
-  const rows = Array.from(document.querySelectorAll('.guest')).map(div => {
-    // Grab each field by name
+    const rows = Array.from(document.querySelectorAll('.guest')).map(div => {  
     const first_name = div.querySelector('input[name="first_name"]').value.trim()
     const last_name  = div.querySelector('input[name="last_name"]').value.trim()
-    
-    // The radio that’s checked: "yes" → true, else false
     const attending  = div.querySelector('input[type="radio"]:checked').value === 'yes'
-    // If textarea is blank, store null (so your DB sees it as empty)
     const allergies  = div.querySelector('textarea[name="allergies"]').value.trim() || null
 
     return { first_name, last_name, email : mainEmail, attending, allergies }
   })
 
-  // Insert all rows into Supabase in one go
-  const { data, error } = await supabase
+  const error = await supabase
     .from('responses')
     .insert(rows)
 
   if (error) {
     console.error('Supabase error:', error);
     submitBtn.disabled = false;
-    submitBtn.textContent = "Send inn";
+    submitBtn.textContent = "SEND INN";
     return alert('Det skjedde en feil under innsending. Prøv igjen senere.');
   }
   let summary = '';
@@ -103,19 +97,18 @@ document.getElementById('guestForm').addEventListener('submit', async (e) => {
   summary += `Allergier: ${guest.allergies || 'Ingen'}\n\n`;
 });
   try {
-    const response = await emailjs.send(
+    await emailjs.send(
       "service_o3qutk5",
       "template_3gkuh4k",
       { email: mainEmail, guest_summary: summary }
     );
-    console.log('Email send success:', response.status, response.text);
   
     window.location.href = '../confirmation/confirmation.html';
   } catch (err) {
     console.error('EmailJS error:', err);
     alert('Det skjedde en feil under sending av e-post. Prøv igjen senere.');
     submitBtn.disabled = false;
-    submitBtn.textContent = "Send inn";
+    submitBtn.textContent = "SEND INN";
   }
 });
 
