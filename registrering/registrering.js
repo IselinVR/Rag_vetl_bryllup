@@ -79,7 +79,7 @@ document.getElementById('guestForm').addEventListener('submit', async (event) =>
     return { first_name, last_name, email : mainEmail, attending, allergies }
   })
 
-  const error = await supabase
+  const {data, error} = await supabase
     .from('responses')
     .insert(rows)
 
