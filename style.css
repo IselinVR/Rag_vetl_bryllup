@@ -1,99 +1,263 @@
-body{
-    font-family:'Glacial Indifference', sans-serif;
-    background-color: hsl(44, 60%, 95%);
+/* --- GLOBAL STYLES --- */
+/* @import url('https://api.fontshare.com/v2/css?f[]=glacial-indifference@400,700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #FAF7F2;
+    color: #000;
     margin: 0;
     padding: 0;
-    position: relative;
-    text-align: center;
-    font-weight: 300;
+    line-height: 1.6;
+}
+/* body {
+    font-family: 'Glacial Indifference', sans-serif;
+    background-color: #FAF7F2;
+    color: #000;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+} */
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-#invitasjon{
-  width: 90%;
-  text-align: center;
-  margin: 0 auto;
+/* Styling to keep the main header title looking clean as a link */
+.header-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
 }
-
-#overskrift{
-  text-align: center;
-}
-
-#overskrift{
+/* --- HEADER & NAVIGATION --- */
+.site-header {
     text-align: center;
     margin-top: 40px;
+    margin-bottom: 30px;
 }
 
-#overskrift2{
-  font-size: large;
+.site-header h1 {
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    margin: 0 0 5px 0;
 }
 
-.navlist li{
-    text-decoration: none;
+.site-header .date {
+    font-size: 18px;
+    margin: 0 0 25px 0;
+}
+
+.navlist {
     list-style: none;
     padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
+
+.navlist a {
+    text-decoration: none;
+    color: #000;
+    font-size: 18px;
+}
+
+.navlist a.active {
+    font-weight: bold;
+}
+
+/* Styling for inline text links (like "Program" on the front page) */
+.text-link {
+    color: inherit; /* Keeps the text black */
+    text-decoration: none; /* Removes the underline */
     cursor: pointer;
 }
 
-.navlist a,
-.navlist a:visited{
-    text-decoration: none;
-    color: black;
+/* Optional: Adds an underline when the user hovers over it with a mouse so they know it's clickable */
+.text-link:hover {
+    text-decoration: underline;
+}
+/* --- FORSIDE (FRONT PAGE) --- */
+.forside-main {
+    text-align: center;
+    padding-bottom: 60px;
 }
 
-#forside{
-  font-weight: bold;
-  text-decoration: underline 2px;
-  -webkit-text-decoration-line: underline;
+/* Works for both the placeholder and the real image */
+.hero-image-placeholder, .hero-image {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    aspect-ratio: 4 / 4.5;
+    background-color: #ddd;
+    border-radius: 15px;
+    margin: 0 auto 40px auto;
+    display: block;
+    object-fit: cover;
 }
 
-.navlist{
+.info-block {
+    margin-bottom: 40px;
+}
+
+.info-block h2 {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.info-block p {
+    font-size: 18px;
     margin: 0;
-    padding: 0;
-    display: inline-flex;
-    gap: 50px;
+  
+}
+
+/* --- PROGRAM PAGE --- */
+.program-main {
+    padding-bottom: 60px;
+}
+
+.event-section {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+/* Mobile-specific headings */
+.mobile-heading {
+    font-size: 30px;
+    font-weight: 400;
     margin-bottom: 20px;
+}
+
+.mobile-subheading {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Desktop-specific headings (Hidden on mobile) */
+.desktop-heading { display: none; }
+.desktop-subheading { display: none; }
+
+/* Works for both the placeholder and the real image */
+.event-image-placeholder, .event-image {
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+    background-color: #ddd;
+    border-radius: 15px;
+    margin: 0 auto;
+    display: block;
+}
+
+.event-text {
     margin-top: 20px;
 }
 
-.navbar{
-    text-align: center;
-    display: flex;
-    justify-content: center;
+.event-text p {
+    font-size: 18px;
+    margin-bottom: 15px;
 }
 
-@media (max-width: 600px) {
-  .navlist {
-    gap: 20px;
-  }
+.event-text h4 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 25px;
+    margin-bottom: 5px;
 }
 
-.imgcontainer {
-  max-width: 1100px;
-  width: 90%;
-  margin: 0 auto;
-  text-align: center;
-  padding-top: 20px;
+.map-placeholder, .map-image {
+    width: 100%;
+    height: auto;
+    min-height: 120px;
+    background-color: #D3E4CD;
+    border-radius: 10px;
+    margin-top: 20px;
+    display: block;
+}
+/* Add this right below your .map-placeholder rule */
+/* .map-iframe {
+    width: 100%;
+    height: 200px; /* You can adjust this height if you want the map taller or shorter */
+    /* border-radius: 10px;
+    margin-top: 20px;
+    display: block;
+    border: none;
+} */ 
+
+.map-iframe {
+    width: 100%;
+    height: 300px; /* Increased height looks better full-width */
+    border-radius: 10px;
+    margin-top: 20px;
+    display: block;
+    border: none;
+    flex: 0 0 100%; /* Forces the map to take the full width on a new row */
 }
 
-.imgcontainer img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-  z-index: 5;
-  position: relative;
+/* --- SECTION DIVIDER --- */
+/* --- SECTION DIVIDER --- */
+.section-divider {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1); /* Bruker border i stedet for bakgrunnsfarge, mye mer stabilt */
+    width: 60%;
+    margin: 80px auto 40px auto; /* 80px topp, auto høyre, 40px bunn, auto venstre */
+    display: block;
+    position: static; /* Fjerner det forrige posisjonstrikset helt */
 }
+/* --- DESKTOP LAYOUT OVERRIDES --- */
+@media (min-width: 768px) {
+    .hero-image-placeholder, .hero-image {
+        max-width: 550px;
+    }
 
-#regbutton {
-  text-align: center;
-}
+    /* PERFECT DESKTOP LAYOUT */
+    .event-section {
+        flex-direction: row-reverse; 
+        flex-wrap: wrap; /* ADD THIS: Allows the map to drop to the bottom */
+        text-align: left;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 50px;
+    }
+.section-divider {
+        margin-top: 120px;    /* Avstand over streken på PC */
+        margin-bottom: 80px;  /* Avstand under streken på PC */
+    }
+    .event-text {
+        flex: 1; /* Allows text to take up remaining space smoothly */
+        margin-top: 0;
+    }
 
-#regbutton button {
-  padding: 10px 15px;
-  font-size: 1rem;
-  border: none;
-  background-color: rgb(225, 204, 178);
-  color: #000;
-  border-radius: 8px;
-  cursor: pointer;
+    .event-image-placeholder, .event-image {
+        flex: 0 0 35%; /* STRICTLY limits the image to 35% of the container width */
+        max-width: 320px; /* Hard limit so it never gets massive */
+        margin: 0;
+    }
+
+    .mobile-heading { display: none; }
+    .mobile-subheading { display: none; }
+    
+    .desktop-heading { 
+        display: block;
+        font-size: 22px;
+        font-weight: bold;
+        margin-top: 0;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+    }
+    
+    .desktop-subheading { 
+        display: block;
+        font-size: 20px;
+        font-weight: 400;
+        margin-top: 0;
+        margin-bottom: 25px;
+    }
 }
