@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 
 const routes = {
   '/program':      '/src/program/program.html',
-  '/registrering': '/src/registrering/registrering.html',
+  // '/registrering': '/src/registrering/registrering.html',
   '/confirmation': '/src/confirmation/confirmation.html',
   '/sted':         '/src/sted/sted.html',
 }
