@@ -8,7 +8,7 @@ const supabase = createClient(SUPA_URL, SUPA_KEY)
 const overskrift = document.getElementById("overskrift");
 
 overskrift.addEventListener("click", () =>{
-    window.location.href = "../index.html";
+    window.location.href = "/";
 });
 
 
@@ -103,7 +103,7 @@ document.getElementById('guestForm').addEventListener('submit', async (event) =>
       { email: mainEmail, guest_summary: summary }
     );
   
-    window.location.href = '../confirmation/confirmation.html';
+    window.location.href = '/confirmation';
   } catch (err) {
     console.error('EmailJS error:', err);
     alert('Det skjedde en feil under sending av e-post. Prøv igjen senere.');
