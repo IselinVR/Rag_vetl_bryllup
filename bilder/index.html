@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bilder - Ragnhild & Vetle</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/src/bilder/bilder.css" />
+</head>
+<body>
+
+    <header class="site-header">
+        <p class="pretitle">Vi gifter oss</p>
+        <h1><a href="/" class="header-link">Ragnhild <span class="amp">&</span> Vetle</a></h1>
+        <p class="date">15. august 2026 &middot; Oslo</p>
+        <nav>
+            <ul class="navlist">
+                <li><a href="/">Forside</a></li>
+                <li><a href="/program">Program</a></li>
+                <li><a href="/bilder" class="active">Bilder</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container bilder-main">
+
+        <section class="bilder-intro">
+            <h2>Del bildene dine</h2>
+            <p>Har du tatt bilder i løpet av dagen? Last dem opp her,<br>så blir de en del av vårt felles album fra bryllupet</p>
+        </section>
+
+        <section class="upload-card" id="uploadcard">
+            <img class="upload-flower" src="/img/blueflower.png" alt="">
+            <p class="upload-hint">Velg bilder fra kamerarullen, eller ta et nytt</p>
+            <label class="upload-name-label" for="uploadername">
+                Navnet ditt <span>(valgfritt)</span>
+                <input type="text" id="uploadername" name="uploadername" maxlength="40" autocomplete="name" placeholder="F.eks. Odin">
+            </label>
+            <input type="file" id="fileinput" accept="image/*" multiple hidden>
+            <button type="button" class="upload-button" id="uploadbutton">Last opp bilder</button>
+            <p class="upload-status" id="uploadstatus" role="status" aria-live="polite"></p>
+        </section>
+
+        <hr class="section-divider">
+
+        <section class="gallery-section">
+            <h3 class="gallery-heading" id="galleryheading">Albumet</h3>
+            <p class="gallery-empty" id="galleryempty" hidden>Ingen bilder ennå &ndash; bli den første til å dele et!</p>
+            <div class="gallery-grid" id="gallerygrid"></div>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <p class="monogram">R &amp; V</p>
+        <p>15. august 2026</p>
+    </footer>
+
+    <dialog class="lightbox" id="lightbox">
+        <button type="button" class="lightbox-close" id="lightboxclose" aria-label="Lukk">&times;</button>
+        <img id="lightboximage" src="" alt="Bryllupsbilde i full størrelse">
+    </dialog>
+
+    <script src="/src/bilder/bilder.js" type="module"></script>
+</body>
+</html>

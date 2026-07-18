@@ -1,0 +1,240 @@
+/* --- BILDER PAGE --- */
+.bilder-main {
+    padding-bottom: 30px;
+}
+
+.bilder-intro {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.bilder-intro h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    margin: 0 0 8px 0;
+}
+
+.bilder-intro p {
+    font-size: 16px;
+    color: var(--ink-soft);
+    margin: 0;
+}
+
+/* --- UPLOAD CARD --- */
+.upload-card {
+    text-align: center;
+    background: #FFFDF9;
+    border: 1px dashed var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 36px 24px;
+    max-width: 480px;
+    margin: 0 auto;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.upload-card.dragover {
+    border-color: var(--blue);
+    background: var(--wash);
+}
+
+.upload-flower {
+    width: 40px;
+    height: auto;
+    margin-bottom: 8px;
+}
+
+.upload-hint {
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin: 0 0 20px 0;
+}
+
+.upload-name-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue-deep);
+    margin-bottom: 20px;
+}
+
+.upload-name-label span {
+    text-transform: none;
+    letter-spacing: 0.04em;
+    font-weight: 400;
+    color: var(--ink-soft);
+}
+
+.upload-name-label input {
+    display: block;
+    width: 100%;
+    max-width: 260px;
+    margin: 8px auto 0 auto;
+    padding: 10px 14px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.upload-name-label input:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 1px;
+}
+
+.upload-button {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #FFFDF9;
+    background: var(--blue-deep);
+    border: none;
+    border-radius: 999px;
+    padding: 14px 34px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.upload-button:hover:not(:disabled) {
+    background: var(--blue);
+}
+
+.upload-button:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.upload-button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.upload-button:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+}
+
+.upload-status {
+    font-size: 14px;
+    color: var(--blue-deep);
+    min-height: 1.5em;
+    margin: 16px 0 0 0;
+}
+
+.upload-status.error {
+    color: #A05252;
+}
+
+/* --- GALLERY --- */
+.gallery-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px;
+    font-weight: 500;
+    text-align: center;
+    margin: 0 0 24px 0;
+}
+
+.gallery-empty {
+    text-align: center;
+    font-size: 15px;
+    color: var(--ink-soft);
+}
+
+.gallery-grid {
+    columns: 2;
+    column-gap: 12px;
+}
+
+.gallery-grid a {
+    display: block;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    break-inside: avoid;
+}
+
+.gallery-grid a:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+}
+
+.gallery-grid img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.25s ease;
+}
+
+.gallery-grid a:hover img {
+    transform: scale(1.03);
+}
+
+.gallery-byline {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: #FFFDF9;
+    padding: 6px 10px;
+}
+
+@media (min-width: 600px) {
+    .gallery-grid {
+        columns: 3;
+    }
+}
+
+/* --- LIGHTBOX --- */
+.lightbox {
+    border: none;
+    border-radius: 12px;
+    padding: 0;
+    background: transparent;
+    max-width: min(92vw, 1000px);
+    max-height: 90vh;
+}
+
+.lightbox::backdrop {
+    background: rgba(55, 50, 46, 0.85);
+}
+
+.lightbox img {
+    display: block;
+    max-width: min(92vw, 1000px);
+    max-height: 85vh;
+    width: auto;
+    height: auto;
+    border-radius: 12px;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+    line-height: 1;
+    color: var(--ink);
+    background: rgba(250, 247, 242, 0.9);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.lightbox-close:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+}

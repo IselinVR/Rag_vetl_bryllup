@@ -5,6 +5,7 @@ const routes = {
   // '/registrering': '/registrering/index.html',
   '/confirmation': '/confirmation/index.html',
   '/sted':         '/sted/index.html',
+  '/bilder':       '/bilder/index.html',
 }
 
 export default defineConfig({
