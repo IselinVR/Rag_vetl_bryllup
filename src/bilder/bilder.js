@@ -8,9 +8,24 @@ const JPEG_QUALITY = 0.85
 
 const supabase = createClient(SUPA_URL, SUPA_KEY)
 
+// Demo mode (/bilder?demo) fills the album with photos from the site itself,
+// so layout and upload flow can be tested without the Supabase bucket.
+const DEMO_MODE = new URLSearchParams(window.location.search).has('demo')
+const DEMO_PHOTOS = [
+  { url: '/Bilde ragvetle.jpg', byline: 'ragnhild' },
+  { url: '/img/Nordre skøyen.JPG', byline: 'odin' },
+  { url: '/Kampen kirke waterimg.png', byline: '' },
+  { url: '/img/Skøyen hovedgård.jpg', byline: 'tante liv' },
+  { url: '/Norde skøyen.png', byline: 'vetle' },
+  { url: '/img/Skøyen hovedgård watercolor.png', byline: '' },
+  { url: '/src/registrering/hovedbilde.jpg', byline: 'onkel jan' },
+]
+
 const uploadCard = document.getElementById('uploadcard')
 const uploadButton = document.getElementById('uploadbutton')
+const cameraButton = document.getElementById('camerabutton')
 const fileInput = document.getElementById('fileinput')
+const cameraInput = document.getElementById('camerainput')
 const nameInput = document.getElementById('uploadername')
 const statusEl = document.getElementById('uploadstatus')
 const galleryGrid = document.getElementById('gallerygrid')
@@ -22,12 +37,15 @@ const lightboxClose = document.getElementById('lightboxclose')
 // ---- Upload ----
 
 uploadButton.addEventListener('click', () => fileInput.click())
+cameraButton.addEventListener('click', () => cameraInput.click())
 
-fileInput.addEventListener('change', () => {
-  const files = Array.from(fileInput.files)
-  fileInput.value = ''
-  uploadFiles(files)
-})
+for (const input of [fileInput, cameraInput]) {
+  input.addEventListener('change', () => {
+    const files = Array.from(input.files)
+    input.value = ''
+    uploadFiles(files)
+  })
+}
 
 uploadCard.addEventListener('dragover', event => {
   event.preventDefault()
@@ -49,7 +67,20 @@ async function uploadFiles(files) {
   if (!files.length) return
 
   uploadButton.disabled = true
+  cameraButton.disabled = true
   setStatus('')
+
+  if (DEMO_MODE) {
+    for (const file of files) {
+      const item = buildGalleryItem({ url: URL.createObjectURL(file), byline: nameInput.value.trim().toLowerCase() })
+      galleryGrid.prepend(item)
+    }
+    galleryEmpty.hidden = true
+    setStatus(files.length === 1 ? 'Bildet er lastet opp – tusen takk!' : `${files.length} bilder er lastet opp – tusen takk!`)
+    uploadButton.disabled = false
+    cameraButton.disabled = false
+    return
+  }
 
   const uploaderSlug = slugify(nameInput.value)
   let uploaded = 0
@@ -69,6 +100,7 @@ async function uploadFiles(files) {
       console.error('Supabase upload error:', error)
       setStatus('Noe gikk galt under opplastingen. Prøv igjen, eller send bildene til oss på melding.', true)
       uploadButton.disabled = false
+      cameraButton.disabled = false
       if (uploaded) loadGallery()
       return
     }
@@ -77,6 +109,7 @@ async function uploadFiles(files) {
 
   setStatus(uploaded === 1 ? 'Bildet er lastet opp – tusen takk!' : `${uploaded} bilder er lastet opp – tusen takk!`)
   uploadButton.disabled = false
+  cameraButton.disabled = false
   loadGallery()
 }
 
@@ -128,6 +161,12 @@ function fileExtension(filename) {
 // ---- Gallery ----
 
 async function loadGallery() {
+  if (DEMO_MODE) {
+    galleryEmpty.hidden = true
+    galleryGrid.replaceChildren(...DEMO_PHOTOS.map(buildGalleryItem))
+    return
+  }
+
   const { data, error } = await supabase.storage
     .from(BUCKET)
     .list('', { limit: 300, sortBy: { column: 'created_at', order: 'desc' } })
@@ -141,13 +180,13 @@ async function loadGallery() {
 
   const images = data.filter(item => /\.(jpe?g|png|gif|webp|avif)$/i.test(item.name))
   galleryEmpty.hidden = images.length > 0
-  galleryGrid.replaceChildren(...images.map(buildGalleryItem))
+  galleryGrid.replaceChildren(...images.map(item => buildGalleryItem({
+    url: supabase.storage.from(BUCKET).getPublicUrl(item.name).data.publicUrl,
+    byline: uploaderFromFilename(item.name),
+  })))
 }
 
-function buildGalleryItem(item) {
-  const { data } = supabase.storage.from(BUCKET).getPublicUrl(item.name)
-  const url = data.publicUrl
-
+function buildGalleryItem({ url, byline }) {
   const link = document.createElement('a')
   link.href = url
 
@@ -157,12 +196,11 @@ function buildGalleryItem(item) {
   img.loading = 'lazy'
   link.appendChild(img)
 
-  const uploader = uploaderFromFilename(item.name)
-  if (uploader) {
-    const byline = document.createElement('span')
-    byline.classList.add('gallery-byline')
-    byline.textContent = uploader
-    link.appendChild(byline)
+  if (byline) {
+    const bylineEl = document.createElement('span')
+    bylineEl.classList.add('gallery-byline')
+    bylineEl.textContent = byline
+    link.appendChild(bylineEl)
   }
 
   link.addEventListener('click', event => {

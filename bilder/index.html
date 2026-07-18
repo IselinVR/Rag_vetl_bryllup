@@ -37,7 +37,11 @@
                 <input type="text" id="uploadername" name="uploadername" maxlength="40" autocomplete="name" placeholder="F.eks. Odin">
             </label>
             <input type="file" id="fileinput" accept="image/*" multiple hidden>
-            <button type="button" class="upload-button" id="uploadbutton">Last opp bilder</button>
+            <input type="file" id="camerainput" accept="image/*" capture="environment" hidden>
+            <div class="upload-actions">
+                <button type="button" class="upload-button" id="camerabutton">Ta et bilde</button>
+                <button type="button" class="upload-button secondary" id="uploadbutton">Velg fra kamerarullen</button>
+            </div>
             <p class="upload-status" id="uploadstatus" role="status" aria-live="polite"></p>
         </section>
 

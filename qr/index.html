@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QR-kort til bordene - Ragnhild & Vetle</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/src/qr/qr.css" />
+</head>
+<body>
+
+    <header class="site-header screen-only">
+        <p class="pretitle">Vi gifter oss</p>
+        <h1><a href="/" class="header-link">Ragnhild <span class="amp">&</span> Vetle</a></h1>
+        <p class="date">15. august 2026 &middot; Oslo</p>
+    </header>
+
+    <main class="container qr-main">
+
+        <section class="qr-intro screen-only">
+            <h2>QR-kort til bordene</h2>
+            <p>Skriv ut dette arket og legg kortene på bordene i bryllupet.<br>Gjestene skanner koden og kommer rett til bildealbumet</p>
+            <button type="button" class="print-button" id="printbutton">Skriv ut</button>
+            <p class="qr-note">Arket har fire like kort &ndash; klipp langs de stiplede linjene</p>
+        </section>
+
+        <section class="card-sheet" id="cardsheet">
+            <!-- Four identical cards are cloned in by qr.js -->
+            <div class="qr-card" id="cardtemplate">
+                <img class="card-flower" src="/img/blueflower.png" alt="">
+                <p class="card-names">Ragnhild <span class="amp">&</span> Vetle</p>
+                <p class="card-title">Del bildene dine fra dagen</p>
+                <div class="card-qr" data-qr></div>
+                <p class="card-scan">Skann med mobilkameraet</p>
+                <p class="card-url">www.ragnhildogvetle.no/bilder</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="/src/qr/qr.js" type="module"></script>
+</body>
+</html>

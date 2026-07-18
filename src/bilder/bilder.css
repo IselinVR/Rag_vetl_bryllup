@@ -90,6 +90,13 @@
     outline-offset: 1px;
 }
 
+.upload-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
 .upload-button {
     font-family: 'Montserrat', sans-serif;
     font-size: 13px;
@@ -103,6 +110,16 @@
     padding: 14px 34px;
     cursor: pointer;
     transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.upload-button.secondary {
+    color: var(--blue-deep);
+    background: transparent;
+    border: 1px solid var(--blue-deep);
+}
+
+.upload-button.secondary:hover:not(:disabled) {
+    background: var(--wash);
 }
 
 .upload-button:hover:not(:disabled) {
@@ -156,6 +173,7 @@
 
 .gallery-grid a {
     display: block;
+    text-decoration: none;
     margin-bottom: 12px;
     border-radius: 10px;
     overflow: hidden;
