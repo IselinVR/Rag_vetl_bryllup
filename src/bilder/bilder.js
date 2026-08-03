@@ -486,7 +486,7 @@ saveSelectedButton.addEventListener('click', async () => {
 
 // Saving many full-size photos means holding them all in memory at once, which
 // is where phones fall over — so ask for it in batches rather than failing.
-const MAX_SAVE_AT_ONCE = 20
+const MAX_SAVE_AT_ONCE = 40
 
 async function savePhotos(urls, onProgress) {
   if (urls.length > MAX_SAVE_AT_ONCE) {

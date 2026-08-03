@@ -67,13 +67,6 @@ body {
     text-transform: none;
 }
 
-.site-header h1 .amp {
-    font-style: italic;
-    font-weight: 400;
-    color: var(--blue);
-    padding: 0 4px;
-}
-
 .site-header .date {
     font-size: 13px;
     font-weight: 500;
