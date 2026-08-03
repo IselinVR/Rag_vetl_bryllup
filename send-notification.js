@@ -1,19 +1,37 @@
 import emailjs from '@emailjs/nodejs'
 import { createClient } from '@supabase/supabase-js'
 
-// ─── CONFIG — fill in before running ────────────────────────────────────────
-const EMAILJS_SERVICE_ID  = 'service_o3qutk5'
-const EMAILJS_TEMPLATE_ID = 'template_soe821c'   // create in EmailJS dashboard
-const EMAILJS_PUBLIC_KEY  = 'TsxEMZ_HueJzgKhtQ'
-const EMAILJS_PRIVATE_KEY = 'xHF4Q93-IUVPjZ1QSukZl'       // EmailJS dashboard → Account → Private Key
-
-const SUPABASE_URL = 'https://bevrttmvumfodpkauiio.supabase.co'
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJldnJ0dG12dW1mb2Rwa2F1aWlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2MTE4NjksImV4cCI6MjA2NjE4Nzg2OX0.DEZl36UgcM_KOlnbVlxfIdW_ZRdmkAMbbdHfF3KLCyk'
-
-const DRY_RUN_EMAIL = 'aleksdokken@gmail.com'
+// ─── CONFIG ─────────────────────────────────────────────────────────────────
+// All values come from the environment. Nothing secret belongs in this file:
+// the whole repo is published to GitHub Pages, so anything hardcoded here is
+// downloadable by anyone. Copy .env.example to .env and fill it in, then run:
+//   set -a && . ./.env && set +a && node send-notification.js --dry-run
+//
+// SUPABASE_SERVICE_ROLE_KEY must be the service_role key, not the anon key —
+// anon has no read access to `responses` (guest names/emails are not public).
+const {
+  EMAILJS_SERVICE_ID,
+  EMAILJS_TEMPLATE_ID,
+  EMAILJS_PUBLIC_KEY,
+  EMAILJS_PRIVATE_KEY,
+  SUPABASE_URL,
+  SUPABASE_SERVICE_ROLE_KEY,
+  DRY_RUN_EMAIL,
+} = process.env
 // ────────────────────────────────────────────────────────────────────────────
 
 const isDryRun = process.argv.includes('--dry-run')
+
+const required = isDryRun
+  ? { EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY, EMAILJS_PRIVATE_KEY, DRY_RUN_EMAIL }
+  : { EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY, EMAILJS_PRIVATE_KEY, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY }
+
+const missing = Object.entries(required).filter(([, v]) => !v).map(([k]) => k)
+if (missing.length) {
+  console.error('Missing required environment variable(s):', missing.join(', '))
+  console.error('See .env.example — copy it to .env and fill in the values.')
+  process.exit(1)
+}
 
 if (isDryRun) {
   console.log('DRY RUN — all emails will be sent to', DRY_RUN_EMAIL)
@@ -26,7 +44,7 @@ let targets
 if (isDryRun) {
   targets = [{ first_name: 'Test', last_name: '', email: DRY_RUN_EMAIL }]
 } else {
-  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
   const { data: guests, error } = await supabase
     .from('responses')
     .select('first_name, last_name, email')

@@ -19,8 +19,9 @@ yarn-error.log*
 .vscode/
 
 # OS-specific
-.DS_Store        # macOS
-Thumbs.db        # Windows
+# (git does not strip trailing comments from patterns — keep them on own lines)
+.DS_Store
+Thumbs.db
 
 # Cache
 .cache/
