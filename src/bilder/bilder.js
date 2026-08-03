@@ -5,6 +5,7 @@ const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsI
 const BUCKET = 'bryllupsbilder'
 const MAX_DIMENSION = 1800
 const JPEG_QUALITY = 0.85
+const HEIC_RE = /\.(heic|heif)$/i
 
 const supabase = createClient(SUPA_URL, SUPA_KEY)
 
@@ -28,6 +29,7 @@ const fileInput = document.getElementById('fileinput')
 const cameraInput = document.getElementById('camerainput')
 const nameInput = document.getElementById('uploadername')
 const statusEl = document.getElementById('uploadstatus')
+const uploadList = document.getElementById('uploadlist')
 const galleryGrid = document.getElementById('gallerygrid')
 const galleryEmpty = document.getElementById('galleryempty')
 const lightbox = document.getElementById('lightbox')
@@ -70,47 +72,68 @@ async function uploadFiles(files) {
   cameraButton.disabled = true
   setStatus('')
 
-  if (DEMO_MODE) {
-    for (const file of files) {
-      const item = buildGalleryItem({ url: URL.createObjectURL(file), byline: nameInput.value.trim().toLowerCase() })
-      galleryGrid.prepend(item)
-    }
-    galleryEmpty.hidden = true
-    setStatus(files.length === 1 ? 'Bildet er lastet opp – tusen takk!' : `${files.length} bilder er lastet opp – tusen takk!`)
-    uploadButton.disabled = false
-    cameraButton.disabled = false
-    return
-  }
+  // One progress row per file, so a guest can see exactly which photos went
+  // through and which (if any) had trouble — instead of a single vague message.
+  uploadList.replaceChildren()
+  uploadList.hidden = false
+  const rows = files.map(buildProgressRow)
+  rows.forEach(row => uploadList.appendChild(row.el))
 
   const uploaderSlug = slugify(nameInput.value)
+  const byline = nameInput.value.trim().toLowerCase()
   let uploaded = 0
+  let failed = 0
 
   for (const [index, file] of files.entries()) {
-    setStatus(`Laster opp bilde ${index + 1} av ${files.length} …`)
+    const row = rows[index]
+    setStatus(`Behandler bilde ${index + 1} av ${files.length} …`)
+    row.set('uploading', 'Behandler …')
 
-    const blob = await shrinkImage(file)
-    const extension = blob === file ? fileExtension(file.name) : 'jpg'
-    const path = `${Date.now()}-${randomId()}__${uploaderSlug}.${extension}`
+    const prepared = await prepareImage(file)
+    if (!prepared.ok) {
+      row.set('error', prepared.message)
+      failed++
+      continue
+    }
 
+    // Preview from the processed JPEG, so it renders even for converted HEIC.
+    row.showThumb(prepared.blob)
+    row.set('uploading', 'Laster opp …')
+
+    if (DEMO_MODE) {
+      galleryGrid.prepend(buildGalleryItem({ url: URL.createObjectURL(prepared.blob), byline }))
+      galleryEmpty.hidden = true
+      row.set('done', 'Delt')
+      uploaded++
+      continue
+    }
+
+    const path = `${Date.now()}-${randomId()}__${uploaderSlug}.jpg`
     const { error } = await supabase.storage
       .from(BUCKET)
-      .upload(path, blob, { contentType: blob.type || file.type, cacheControl: '31536000' })
+      .upload(path, prepared.blob, { contentType: 'image/jpeg', cacheControl: '31536000' })
 
     if (error) {
       console.error('Supabase upload error:', error)
-      setStatus('Noe gikk galt under opplastingen. Prøv igjen, eller send bildene til oss på melding.', true)
-      uploadButton.disabled = false
-      cameraButton.disabled = false
-      if (uploaded) loadGallery()
-      return
+      row.set('error', uploadErrorMessage(error))
+      failed++
+      continue
     }
+    row.set('done', 'Delt')
     uploaded++
   }
 
-  setStatus(uploaded === 1 ? 'Bildet er lastet opp – tusen takk!' : `${uploaded} bilder er lastet opp – tusen takk!`)
+  if (failed === 0) {
+    setStatus(uploaded === 1 ? 'Bildet er lastet opp – tusen takk!' : `${uploaded} bilder er lastet opp – tusen takk!`)
+  } else if (uploaded === 0) {
+    setStatus('Ingen bilder ble lastet opp. Se detaljene over, eller send bildene til oss på melding.', true)
+  } else {
+    setStatus(`${uploaded} av ${files.length} bilder ble lastet opp. Se detaljene over.`, true)
+  }
+
   uploadButton.disabled = false
   cameraButton.disabled = false
-  loadGallery()
+  if (uploaded && !DEMO_MODE) loadGallery()
 }
 
 function setStatus(message, isError = false) {
@@ -118,24 +141,109 @@ function setStatus(message, isError = false) {
   statusEl.classList.toggle('error', isError)
 }
 
-// Downscale large phone photos before upload so the album loads fast on venue wifi.
-// Falls back to the original file if the browser can't decode it (e.g. HEIC).
-async function shrinkImage(file) {
-  try {
-    const bitmap = await createImageBitmap(file)
-    const scale = Math.min(1, MAX_DIMENSION / Math.max(bitmap.width, bitmap.height))
+// A live status row for a single file: thumbnail + name + state.
+function buildProgressRow(file) {
+  const el = document.createElement('li')
+  el.className = 'upload-item is-pending'
 
-    const canvas = document.createElement('canvas')
-    canvas.width = Math.round(bitmap.width * scale)
-    canvas.height = Math.round(bitmap.height * scale)
-    canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height)
-    bitmap.close()
+  const thumb = document.createElement('span')
+  thumb.className = 'upload-thumb'
 
-    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', JPEG_QUALITY))
-    return blob && blob.size < file.size ? blob : file
-  } catch {
-    return file
+  const meta = document.createElement('span')
+  meta.className = 'upload-item-meta'
+  const nameEl = document.createElement('span')
+  nameEl.className = 'upload-item-name'
+  nameEl.textContent = shortName(file.name)
+  const stateEl = document.createElement('span')
+  stateEl.className = 'upload-item-status'
+  stateEl.textContent = 'I kø …'
+  meta.append(nameEl, stateEl)
+
+  el.append(thumb, meta)
+
+  return {
+    el,
+    showThumb(blob) {
+      const img = document.createElement('img')
+      img.alt = ''
+      img.src = URL.createObjectURL(blob)
+      thumb.replaceChildren(img)
+    },
+    set(state, message) {
+      el.classList.remove('is-pending', 'is-uploading', 'is-done', 'is-error')
+      el.classList.add(`is-${state}`)
+      stateEl.textContent = message
+    },
   }
+}
+
+function shortName(name) {
+  return name.length > 28 ? name.slice(0, 25) + '…' : name
+}
+
+function uploadErrorMessage(error) {
+  const msg = (error && error.message) || ''
+  if (/exceeded|too large|maximum|payload/i.test(msg)) return 'Bildet er for stort.'
+  if (/network|fetch|timeout|connection/i.test(msg)) return 'Nettverksfeil – sjekk tilkoblingen og prøv igjen.'
+  return 'Kunne ikke lastes opp. Prøv igjen.'
+}
+
+// Turn any picked file into a downscaled JPEG the whole album can render.
+// iPhone HEIC is the tricky case: most non-Safari browsers can't decode it, so
+// an un-converted HEIC would upload but never appear in the gallery. We convert
+// it first, and if that's impossible we report it clearly instead of silently
+// dropping the photo. Returns { ok, blob } or { ok:false, message }.
+async function prepareImage(file) {
+  try {
+    return { ok: true, blob: await shrinkToJpeg(file) }
+  } catch {
+    // Direct decode failed — most likely HEIC on a non-Safari browser.
+  }
+
+  if (looksLikeHeic(file)) {
+    try {
+      const converted = await convertHeic(file)
+      return { ok: true, blob: await shrinkToJpeg(converted) }
+    } catch (err) {
+      console.error('HEIC-konvertering feilet:', err)
+      return { ok: false, message: 'HEIC-bilde – klarte ikke å lese det i denne nettleseren. Prøv Safari, eller send det til oss på melding.' }
+    }
+  }
+
+  return { ok: false, message: 'Klarte ikke å lese denne filen – er det et bilde?' }
+}
+
+// Downscale before upload so the album loads fast on venue wifi. Throws if the
+// browser can't decode the source (caller handles the fallback).
+async function shrinkToJpeg(file) {
+  const bitmap = await createImageBitmap(file)
+  const scale = Math.min(1, MAX_DIMENSION / Math.max(bitmap.width, bitmap.height))
+
+  const canvas = document.createElement('canvas')
+  canvas.width = Math.round(bitmap.width * scale)
+  canvas.height = Math.round(bitmap.height * scale)
+  canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height)
+  bitmap.close()
+
+  const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', JPEG_QUALITY))
+  if (!blob) throw new Error('canvas.toBlob returnerte null')
+  return blob
+}
+
+function looksLikeHeic(file) {
+  return /image\/hei[cf]/i.test(file.type) || HEIC_RE.test(file.name)
+}
+
+// Lazy-loaded only when a HEIC actually needs converting, so normal JPEG
+// uploads never pay for the library.
+let heic2anyPromise
+async function convertHeic(file) {
+  if (!heic2anyPromise) {
+    heic2anyPromise = import('https://cdn.jsdelivr.net/npm/heic2any@0.0.4/+esm').then(m => m.default || m)
+  }
+  const heic2any = await heic2anyPromise
+  const out = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.9 })
+  return Array.isArray(out) ? out[0] : out
 }
 
 function slugify(value) {
@@ -151,11 +259,6 @@ function slugify(value) {
 
 function randomId() {
   return Math.random().toString(36).slice(2, 8)
-}
-
-function fileExtension(filename) {
-  const match = filename.match(/\.([a-zA-Z0-9]+)$/)
-  return match ? match[1].toLowerCase() : 'jpg'
 }
 
 // ---- Gallery ----
@@ -178,7 +281,7 @@ async function loadGallery() {
     return
   }
 
-  const images = data.filter(item => /\.(jpe?g|png|gif|webp|avif)$/i.test(item.name))
+  const images = data.filter(item => /\.(jpe?g|png|gif|webp|avif|heic|heif)$/i.test(item.name))
   galleryEmpty.hidden = images.length > 0
   galleryGrid.replaceChildren(...images.map(item => buildGalleryItem({
     url: supabase.storage.from(BUCKET).getPublicUrl(item.name).data.publicUrl,

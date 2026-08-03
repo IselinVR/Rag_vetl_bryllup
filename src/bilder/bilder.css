@@ -151,6 +151,86 @@
     color: #A05252;
 }
 
+/* --- PER-FILE UPLOAD PROGRESS --- */
+.upload-list {
+    list-style: none;
+    margin: 18px 0 0 0;
+    padding: 0;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.upload-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.upload-thumb {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    background: var(--wash);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.upload-thumb::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--line);
+}
+
+.upload-item.is-done .upload-thumb::after,
+.upload-item.is-error .upload-thumb::after {
+    display: none;
+}
+
+.upload-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 1;
+}
+
+.upload-item-meta {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.upload-item-name {
+    font-size: 13px;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.upload-item-status {
+    font-size: 12px;
+    color: var(--ink-soft);
+}
+
+.upload-item.is-uploading .upload-item-status,
+.upload-item.is-done .upload-item-status {
+    color: var(--blue-deep);
+}
+
+.upload-item.is-error .upload-item-status {
+    color: #A05252;
+}
+
 /* --- GALLERY --- */
 .gallery-heading {
     font-family: 'Cormorant Garamond', serif;
