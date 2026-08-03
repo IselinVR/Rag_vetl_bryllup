@@ -44,8 +44,10 @@
                 <button type="button" class="upload-button" id="camerabutton">Ta et bilde</button>
                 <button type="button" class="upload-button secondary" id="uploadbutton">Velg fra kamerarullen</button>
             </div>
-            <p class="upload-status" id="uploadstatus" role="status" aria-live="polite"></p>
-            <ul class="upload-list" id="uploadlist" aria-live="polite" hidden></ul>
+            <p class="upload-status" id="uploadstatus" role="status"></p>
+            <!-- Not a live region: #uploadstatus already announces progress, and
+                 announcing every row too floods screen readers on big batches. -->
+            <ul class="upload-list" id="uploadlist" hidden></ul>
         </section>
 
         <hr class="section-divider">
