@@ -5,7 +5,7 @@ const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsI
 const BUCKET = 'bryllupsbilder'
 const MAX_DIMENSION = 1800
 const JPEG_QUALITY = 0.85
-const HEIC_RE = /\.(heic|heif)$/i
+const CONVERTER_TIMEOUT_MS = 20000
 
 const supabase = createClient(SUPA_URL, SUPA_KEY)
 
@@ -45,7 +45,7 @@ for (const input of [fileInput, cameraInput]) {
   input.addEventListener('change', () => {
     const files = Array.from(input.files)
     input.value = ''
-    uploadFiles(files)
+    startUpload(files)
   })
 }
 
@@ -61,19 +61,53 @@ uploadCard.addEventListener('dragleave', () => {
 uploadCard.addEventListener('drop', event => {
   event.preventDefault()
   uploadCard.classList.remove('dragover')
-  const files = Array.from(event.dataTransfer.files).filter(f => f.type.startsWith('image/'))
-  uploadFiles(files)
+  // Don't filter on file.type here: browsers often report an empty type for
+  // .heic, so a strict image/* test would silently discard the very files we
+  // added HEIC support for. Drop obvious non-images by extension instead and
+  // let prepareImage() judge the rest.
+  const files = Array.from(event.dataTransfer.files).filter(isPlausibleImage)
+  startUpload(files)
 })
 
-async function uploadFiles(files) {
-  if (!files.length) return
+// Single entry point: guarantees a guest can never start two overlapping runs
+// (which used to let one run wipe the other's rows and report a wrong result),
+// and that a crash can never leave the buttons stuck disabled.
+let isUploading = false
+async function startUpload(files) {
+  if (isUploading) return
+  if (!files.length) {
+    setStatus('Fant ingen bilder å laste opp. Velg bildefiler og prøv igjen.', true)
+    return
+  }
 
+  isUploading = true
   uploadButton.disabled = true
   cameraButton.disabled = true
+
+  try {
+    await uploadFiles(files)
+  } catch (err) {
+    console.error('Uventet feil under opplasting:', err)
+    setStatus('Noe gikk galt under opplastingen. Prøv igjen, eller send bildene til oss på melding.', true)
+  } finally {
+    isUploading = false
+    uploadButton.disabled = false
+    cameraButton.disabled = false
+  }
+}
+
+function isPlausibleImage(file) {
+  if (file.type) return file.type.startsWith('image/')
+  // No type reported — accept anything that looks like a photo by extension.
+  return /\.(jpe?g|png|gif|webp|avif|heic|heif|bmp|tiff?)$/i.test(file.name)
+}
+
+async function uploadFiles(files) {
   setStatus('')
 
   // One progress row per file, so a guest can see exactly which photos went
   // through and which (if any) had trouble — instead of a single vague message.
+  revokeThumbUrls()
   uploadList.replaceChildren()
   uploadList.hidden = false
   const rows = files.map(buildProgressRow)
@@ -131,14 +165,19 @@ async function uploadFiles(files) {
     setStatus(`${uploaded} av ${files.length} bilder ble lastet opp. Se detaljene over.`, true)
   }
 
-  uploadButton.disabled = false
-  cameraButton.disabled = false
   if (uploaded && !DEMO_MODE) loadGallery()
 }
 
 function setStatus(message, isError = false) {
   statusEl.textContent = message
   statusEl.classList.toggle('error', isError)
+}
+
+// Thumbnails hold blob URLs alive until revoked; release the previous batch so
+// a guest uploading many photos doesn't accumulate them for the page lifetime.
+const thumbUrls = []
+function revokeThumbUrls() {
+  while (thumbUrls.length) URL.revokeObjectURL(thumbUrls.pop())
 }
 
 // A live status row for a single file: thumbnail + name + state.
@@ -164,9 +203,11 @@ function buildProgressRow(file) {
   return {
     el,
     showThumb(blob) {
+      const url = URL.createObjectURL(blob)
+      thumbUrls.push(url)
       const img = document.createElement('img')
       img.alt = ''
-      img.src = URL.createObjectURL(blob)
+      img.src = url
       thumb.replaceChildren(img)
     },
     set(state, message) {
@@ -194,54 +235,97 @@ function uploadErrorMessage(error) {
 // it first, and if that's impossible we report it clearly instead of silently
 // dropping the photo. Returns { ok, blob } or { ok:false, message }.
 async function prepareImage(file) {
+  if (!file.size) return { ok: false, message: 'Filen er tom.' }
+
   try {
     return { ok: true, blob: await shrinkToJpeg(file) }
-  } catch {
-    // Direct decode failed — most likely HEIC on a non-Safari browser.
+  } catch (err) {
+    // Direct decode failed — most likely HEIC on a non-Safari browser, but the
+    // file may also be a HEIC mislabelled as .jpg (common when a photo arrives
+    // via WhatsApp or Drive), so we don't gate the retry on name or MIME type.
+    console.error('Kunne ikke dekode bildet direkte, prøver konvertering:', file.name, err)
   }
 
-  if (looksLikeHeic(file)) {
-    try {
-      const converted = await convertHeic(file)
-      return { ok: true, blob: await shrinkToJpeg(converted) }
-    } catch (err) {
-      console.error('HEIC-konvertering feilet:', err)
-      return { ok: false, message: 'HEIC-bilde – klarte ikke å lese det i denne nettleseren. Prøv Safari, eller send det til oss på melding.' }
-    }
+  try {
+    const converted = await convertHeic(file)
+    return { ok: true, blob: await shrinkToJpeg(converted) }
+  } catch (err) {
+    console.error('Konvertering feilet:', file.name, err)
+    return { ok: false, message: heicErrorMessage(err) }
   }
+}
 
-  return { ok: false, message: 'Klarte ikke å lese denne filen – er det et bilde?' }
+function heicErrorMessage(err) {
+  if (err && err.message === CONVERTER_UNAVAILABLE) {
+    return 'Fikk ikke lastet bildeverktøyet – sjekk nettet og prøv igjen.'
+  }
+  return 'Klarte ikke å lese dette bildet. Prøv å dele det fra Bilder-appen, eller send det til oss på melding.'
 }
 
 // Downscale before upload so the album loads fast on venue wifi. Throws if the
 // browser can't decode the source (caller handles the fallback).
 async function shrinkToJpeg(file) {
-  const bitmap = await createImageBitmap(file)
+  // imageOrientation: 'from-image' applies the EXIF rotation while decoding.
+  // Without it, portrait phone photos land in the album sideways, because the
+  // canvas re-encode drops the EXIF tag that would have told viewers to rotate.
+  const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' })
   const scale = Math.min(1, MAX_DIMENSION / Math.max(bitmap.width, bitmap.height))
 
   const canvas = document.createElement('canvas')
   canvas.width = Math.round(bitmap.width * scale)
   canvas.height = Math.round(bitmap.height * scale)
-  canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height)
+  const context = canvas.getContext('2d')
+  if (!context) {
+    bitmap.close()
+    // iOS Safari refuses new contexts once its total canvas memory cap is hit.
+    throw new Error('Fikk ikke 2d-kontekst (minnegrense i nettleseren?)')
+  }
+  context.drawImage(bitmap, 0, 0, canvas.width, canvas.height)
   bitmap.close()
 
   const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', JPEG_QUALITY))
+  // Release the backing store right away instead of waiting for GC, so a long
+  // batch doesn't pile up full-size canvases.
+  canvas.width = canvas.height = 0
   if (!blob) throw new Error('canvas.toBlob returnerte null')
   return blob
 }
 
-function looksLikeHeic(file) {
-  return /image\/hei[cf]/i.test(file.type) || HEIC_RE.test(file.name)
+// Lazy-loaded only when a photo actually needs converting, so normal JPEG
+// uploads never pay for the library. Deliberately NOT caching a rejected
+// promise: a single flaky moment on venue wifi must not disable conversion for
+// the rest of the session.
+const CONVERTER_UNAVAILABLE = 'converter-unavailable'
+const CONVERTER_URL = 'https://cdn.jsdelivr.net/npm/heic2any@0.0.4/+esm'
+let heic2anyPromise
+let converterAttempt = 0
+function loadConverter() {
+  if (!heic2anyPromise) {
+    // A failed import() is remembered by the browser's module map, so retrying
+    // the same URL would fail without even refetching. A fresh query string
+    // gives each attempt its own module-map entry (jsDelivr ignores the param).
+    const url = converterAttempt === 0 ? CONVERTER_URL : `${CONVERTER_URL}?retry=${converterAttempt}`
+    converterAttempt++
+
+    heic2anyPromise = Promise.race([
+      import(/* @vite-ignore */ url).then(m => m.default || m),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error(CONVERTER_UNAVAILABLE)), CONVERTER_TIMEOUT_MS)),
+    ]).catch(err => {
+      heic2anyPromise = undefined
+      throw err
+    })
+  }
+  return heic2anyPromise
 }
 
-// Lazy-loaded only when a HEIC actually needs converting, so normal JPEG
-// uploads never pay for the library.
-let heic2anyPromise
 async function convertHeic(file) {
-  if (!heic2anyPromise) {
-    heic2anyPromise = import('https://cdn.jsdelivr.net/npm/heic2any@0.0.4/+esm').then(m => m.default || m)
+  let heic2any
+  try {
+    heic2any = await loadConverter()
+  } catch {
+    throw new Error(CONVERTER_UNAVAILABLE)
   }
-  const heic2any = await heic2anyPromise
   const out = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.9 })
   return Array.isArray(out) ? out[0] : out
 }
@@ -281,7 +365,9 @@ async function loadGallery() {
     return
   }
 
-  const images = data.filter(item => /\.(jpe?g|png|gif|webp|avif|heic|heif)$/i.test(item.name))
+  // Only formats browsers can actually render. Uploads are always .jpg now, but
+  // any raw .heic left by the old code path would show as a broken image.
+  const images = data.filter(item => /\.(jpe?g|png|gif|webp|avif)$/i.test(item.name))
   galleryEmpty.hidden = images.length > 0
   galleryGrid.replaceChildren(...images.map(item => buildGalleryItem({
     url: supabase.storage.from(BUCKET).getPublicUrl(item.name).data.publicUrl,

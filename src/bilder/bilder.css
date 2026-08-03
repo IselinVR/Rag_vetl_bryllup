@@ -162,6 +162,12 @@
     gap: 10px;
 }
 
+/* An author `display` beats the UA [hidden] rule, so restore it explicitly —
+   otherwise the hidden attribute in the markup does nothing. */
+.upload-list[hidden] {
+    display: none;
+}
+
 .upload-item {
     display: flex;
     align-items: center;
@@ -220,6 +226,7 @@
 .upload-item-status {
     font-size: 12px;
     color: var(--ink-soft);
+    overflow-wrap: anywhere;
 }
 
 .upload-item.is-uploading .upload-item-status,
