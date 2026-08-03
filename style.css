@@ -139,7 +139,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 16px;
-    margin: 48px auto;
+    margin: 40px auto 22px;
     border: none;
 }
 
@@ -194,6 +194,11 @@ body {
     font-size: 16px;
     color: var(--ink-soft);
     margin: 0;
+    text-wrap: pretty;
+}
+
+.info-block p + p {
+    margin-top: 14px;
 }
 
 .info-block strong {
