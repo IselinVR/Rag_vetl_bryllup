@@ -55,10 +55,20 @@
         <section class="gallery-section">
             <h3 class="gallery-heading" id="galleryheading">Albumet</h3>
             <p class="gallery-empty" id="galleryempty" hidden>Ingen bilder ennå &ndash; bli den første til å dele et!</p>
+            <p class="gallery-hint" id="galleryhint" hidden>Trykk på et bilde for å se det stort, eller haken for å velge flere du vil lagre</p>
             <div class="gallery-grid" id="gallerygrid"></div>
         </section>
 
     </main>
+
+    <div class="select-bar" id="selectbar" hidden>
+        <p class="select-count" id="selectcount"></p>
+        <div class="select-bar-actions">
+            <button type="button" class="upload-button secondary" id="clearselection">Nullstill</button>
+            <button type="button" class="upload-button" id="saveselected">Lagre</button>
+        </div>
+        <p class="select-status" id="selectstatus" role="status"></p>
+    </div>
 
     <footer class="site-footer">
         <p class="monogram">R &amp; V</p>
@@ -68,6 +78,10 @@
     <dialog class="lightbox" id="lightbox">
         <button type="button" class="lightbox-close" id="lightboxclose" aria-label="Lukk">&times;</button>
         <img id="lightboximage" src="" alt="Bryllupsbilde i full størrelse">
+        <div class="lightbox-actions">
+            <button type="button" class="upload-button" id="lightboxsave">Lagre bilde</button>
+            <span class="lightbox-status" id="lightboxstatus" role="status"></span>
+        </div>
     </dialog>
 
     <script src="/src/bilder/bilder.js" type="module"></script>

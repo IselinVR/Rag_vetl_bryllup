@@ -32,9 +32,17 @@ const statusEl = document.getElementById('uploadstatus')
 const uploadList = document.getElementById('uploadlist')
 const galleryGrid = document.getElementById('gallerygrid')
 const galleryEmpty = document.getElementById('galleryempty')
+const galleryHint = document.getElementById('galleryhint')
 const lightbox = document.getElementById('lightbox')
 const lightboxImage = document.getElementById('lightboximage')
 const lightboxClose = document.getElementById('lightboxclose')
+const lightboxSave = document.getElementById('lightboxsave')
+const lightboxStatus = document.getElementById('lightboxstatus')
+const selectBar = document.getElementById('selectbar')
+const selectCount = document.getElementById('selectcount')
+const selectStatus = document.getElementById('selectstatus')
+const clearSelectionButton = document.getElementById('clearselection')
+const saveSelectedButton = document.getElementById('saveselected')
 
 // ---- Upload ----
 
@@ -348,9 +356,13 @@ function randomId() {
 // ---- Gallery ----
 
 async function loadGallery() {
+  // Rebuilding the grid detaches the selected nodes, so drop the stale selection.
+  clearSelection()
+
   if (DEMO_MODE) {
     galleryEmpty.hidden = true
     galleryGrid.replaceChildren(...DEMO_PHOTOS.map(buildGalleryItem))
+    galleryHint.hidden = DEMO_PHOTOS.length === 0
     return
   }
 
@@ -369,6 +381,7 @@ async function loadGallery() {
   // any raw .heic left by the old code path would show as a broken image.
   const images = data.filter(item => /\.(jpe?g|png|gif|webp|avif)$/i.test(item.name))
   galleryEmpty.hidden = images.length > 0
+  galleryHint.hidden = images.length === 0
   galleryGrid.replaceChildren(...images.map(item => buildGalleryItem({
     url: supabase.storage.from(BUCKET).getPublicUrl(item.name).data.publicUrl,
     byline: uploaderFromFilename(item.name),
@@ -376,7 +389,11 @@ async function loadGallery() {
 }
 
 function buildGalleryItem({ url, byline }) {
+  const item = document.createElement('div')
+  item.className = 'gallery-item'
+
   const link = document.createElement('a')
+  link.className = 'gallery-link'
   link.href = url
 
   const img = document.createElement('img')
@@ -394,11 +411,137 @@ function buildGalleryItem({ url, byline }) {
 
   link.addEventListener('click', event => {
     event.preventDefault()
-    lightboxImage.src = url
-    lightbox.showModal()
+    openLightbox(url)
   })
 
-  return link
+  // Always-visible checkbox rather than a separate "select mode": one less
+  // state to explain, and tapping the photo still just opens it.
+  const select = document.createElement('button')
+  select.type = 'button'
+  select.className = 'gallery-select'
+  select.setAttribute('aria-pressed', 'false')
+  select.setAttribute('aria-label', 'Velg dette bildet')
+  select.addEventListener('click', () => toggleSelection(url, item, select))
+
+  item.append(link, select)
+  return item
+}
+
+// ---- Selection + saving ----
+
+const selected = new Map()   // url -> { item, button }
+
+function toggleSelection(url, item, button) {
+  if (selected.has(url)) {
+    selected.delete(url)
+    item.classList.remove('is-selected')
+    button.setAttribute('aria-pressed', 'false')
+    button.setAttribute('aria-label', 'Velg dette bildet')
+  } else {
+    selected.set(url, { item, button })
+    item.classList.add('is-selected')
+    button.setAttribute('aria-pressed', 'true')
+    button.setAttribute('aria-label', 'Fjern dette bildet fra utvalget')
+  }
+  updateSelectBar()
+}
+
+function clearSelection() {
+  for (const { item, button } of selected.values()) {
+    item.classList.remove('is-selected')
+    button.setAttribute('aria-pressed', 'false')
+    button.setAttribute('aria-label', 'Velg dette bildet')
+  }
+  selected.clear()
+  updateSelectBar()
+}
+
+function updateSelectBar() {
+  const n = selected.size
+  selectBar.hidden = n === 0
+  document.body.classList.toggle('has-selection', n > 0)
+  selectCount.textContent = n === 1 ? '1 bilde valgt' : `${n} bilder valgt`
+  saveSelectedButton.textContent = n === 1 ? 'Lagre bildet' : `Lagre ${n} bilder`
+  if (n === 0) selectStatus.textContent = ''
+}
+
+clearSelectionButton.addEventListener('click', clearSelection)
+
+saveSelectedButton.addEventListener('click', async () => {
+  const urls = [...selected.keys()]
+  if (!urls.length) return
+
+  saveSelectedButton.disabled = true
+  clearSelectionButton.disabled = true
+  try {
+    const result = await savePhotos(urls, msg => { selectStatus.textContent = msg })
+    // Keep the selection so the confirmation stays on screen — clearing it here
+    // would hide the bar, and the message with it. Guests tap Nullstill when done.
+    selectStatus.textContent = result.message
+  } finally {
+    saveSelectedButton.disabled = false
+    clearSelectionButton.disabled = false
+  }
+})
+
+// Saving many full-size photos means holding them all in memory at once, which
+// is where phones fall over — so ask for it in batches rather than failing.
+const MAX_SAVE_AT_ONCE = 20
+
+async function savePhotos(urls, onProgress) {
+  if (urls.length > MAX_SAVE_AT_ONCE) {
+    return { ok: false, message: `Velg maks ${MAX_SAVE_AT_ONCE} bilder om gangen.` }
+  }
+
+  onProgress(urls.length === 1 ? 'Henter bildet …' : `Henter ${urls.length} bilder …`)
+
+  let files
+  try {
+    files = await Promise.all(urls.map(async (url, i) => {
+      const res = await fetch(url)
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const blob = await res.blob()
+      return new File([blob], photoFilename(url, i, urls.length), { type: blob.type || 'image/jpeg' })
+    }))
+  } catch (err) {
+    console.error('Kunne ikke hente bilde(r):', err)
+    return { ok: false, message: 'Fikk ikke hentet bildene. Sjekk nettet og prøv igjen.' }
+  }
+
+  // On phones the native share sheet is the only route into the camera roll,
+  // and it handles several files at once. Desktop falls back to downloads.
+  if (navigator.canShare?.({ files })) {
+    try {
+      onProgress('Åpner lagringsvalg …')
+      await navigator.share({ files })
+      return { ok: true, message: 'Ferdig!' }
+    } catch (err) {
+      if (err?.name === 'AbortError') return { ok: false, message: '' }
+      console.error('Deling feilet, faller tilbake til nedlasting:', err)
+    }
+  }
+
+  onProgress('Laster ned …')
+  for (const file of files) downloadFile(file)
+  return { ok: true, message: files.length === 1 ? 'Bildet er lastet ned.' : `${files.length} bilder er lastet ned.` }
+}
+
+function downloadFile(file) {
+  const url = URL.createObjectURL(file)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = file.name
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+  // Revoke on a later tick so the download has definitely started.
+  setTimeout(() => URL.revokeObjectURL(url), 10000)
+}
+
+function photoFilename(url, index, total) {
+  const ext = (url.match(/\.([a-z0-9]+)(?:\?|$)/i)?.[1] || 'jpg').toLowerCase()
+  const suffix = total > 1 ? `-${index + 1}` : ''
+  return `ragnhild-og-vetle${suffix}.${ext}`
 }
 
 function uploaderFromFilename(filename) {
@@ -409,6 +552,15 @@ function uploaderFromFilename(filename) {
 
 // ---- Lightbox ----
 
+let lightboxUrl = ''
+
+function openLightbox(url) {
+  lightboxUrl = url
+  lightboxImage.src = url
+  lightboxStatus.textContent = ''
+  lightbox.showModal()
+}
+
 lightboxClose.addEventListener('click', () => lightbox.close())
 
 lightbox.addEventListener('click', event => {
@@ -417,6 +569,18 @@ lightbox.addEventListener('click', event => {
 
 lightbox.addEventListener('close', () => {
   lightboxImage.src = ''
+  lightboxUrl = ''
+})
+
+lightboxSave.addEventListener('click', async () => {
+  if (!lightboxUrl) return
+  lightboxSave.disabled = true
+  try {
+    const result = await savePhotos([lightboxUrl], msg => { lightboxStatus.textContent = msg })
+    lightboxStatus.textContent = result.message
+  } finally {
+    lightboxSave.disabled = false
+  }
 })
 
 loadGallery()
