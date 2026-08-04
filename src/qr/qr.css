@@ -9,9 +9,9 @@
 }
 
 .qr-intro h2 {
-    font-family: 'Questrial', sans-serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 36px;
-    font-weight: 400;
+    font-weight: 500;
     margin: 0 0 8px 0;
 }
 
@@ -74,9 +74,9 @@
 }
 
 .card-names {
-    font-family: 'Questrial', sans-serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 24px;
-    font-weight: 400;
+    font-weight: 500;
     letter-spacing: 0.04em;
     color: var(--ink);
     margin: 0;
