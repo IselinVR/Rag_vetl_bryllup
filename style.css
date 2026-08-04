@@ -1,5 +1,5 @@
 /* --- GLOBAL STYLES --- */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Questrial&family=Montserrat:wght@300;400;500;600&display=swap');
 
 :root {
     --paper: #FAF7F2;
@@ -58,9 +58,9 @@ body {
 }
 
 .site-header h1 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Questrial', sans-serif;
     font-size: 44px;
-    font-weight: 500;
+    font-weight: 400;
     letter-spacing: 0.06em;
     line-height: 1.15;
     margin: 0;
@@ -176,9 +176,9 @@ body {
 }
 
 .info-block h2 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Questrial', sans-serif;
     font-size: 32px;
-    font-weight: 500;
+    font-weight: 400;
     letter-spacing: 0.02em;
     margin: 0 0 8px 0;
 }
@@ -229,11 +229,13 @@ body {
 }
 
 .site-footer .monogram {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Questrial', sans-serif;
     font-size: 24px;
-    font-style: italic;
+    letter-spacing: 0.08em;
     color: var(--blue-deep);
     margin: 0 0 4px 0;
+    /* The footer uppercases its paragraphs, which would shout "R OG V". */
+    text-transform: none;
 }
 
 .site-footer p {
@@ -259,9 +261,9 @@ body {
 
 /* Mobile-specific headings */
 .mobile-heading {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Questrial', sans-serif;
     font-size: 34px;
-    font-weight: 500;
+    font-weight: 400;
     letter-spacing: 0.04em;
     margin: 0 0 20px 0;
 }
@@ -381,9 +383,9 @@ body {
 
     .desktop-heading {
         display: block;
-        font-family: 'Cormorant Garamond', serif;
+        font-family: 'Questrial', sans-serif;
         font-size: 34px;
-        font-weight: 500;
+        font-weight: 400;
         letter-spacing: 0.02em;
         text-transform: none;
         margin: 0 0 2px 0;
